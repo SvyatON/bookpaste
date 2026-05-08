@@ -136,7 +136,7 @@ abstract class BookEditScreenLegacyMixin implements BookPasteScreenHandler, Book
             this.dirty = true;
             this.changePage();
             this.updateButtons();
-            this.finalizeBook(false);
+            
         }
 
         return new PasteResult(true, remaining, pagesUsed);
@@ -181,7 +181,7 @@ abstract class BookEditScreenLegacyMixin implements BookPasteScreenHandler, Book
         this.dirty = true;
         this.changePage();
         this.updateButtons();
-        this.finalizeBook(false);
+        
     }
 
     @Override

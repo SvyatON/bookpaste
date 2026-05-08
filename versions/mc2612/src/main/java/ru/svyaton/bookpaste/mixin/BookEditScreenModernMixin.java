@@ -131,8 +131,6 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
             this.updatePageContent();
             this.dirty = true;
             this.updateButtonVisibility();
-            this.saveChanges();
-            this.dirty = true;
         }
 
         return new PasteResult(true, remaining, pagesUsed);
@@ -174,10 +172,8 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
         this.pages.addAll(pages);
         this.currentPage = currentPage;
         this.updatePageContent();
-            this.dirty = true;
+        this.dirty = true;
         this.updateButtonVisibility();
-        this.saveChanges();
-            this.dirty = true;
     }
 
     @Override

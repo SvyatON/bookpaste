@@ -1,0 +1,23 @@
+﻿{
+  "text.bookpaste.done": "%s%sгЃ«гѓ†г‚­г‚№гѓ€г‚’иІјг‚Љд»гЃ‘гЃѕгЃ—гЃџгЂ‚",
+  "text.bookpaste.partial": "本がいっぱいです。クリップボードに%s文字残っています。あと約%s%s必要です。",
+  "text.bookpaste.nospace": "この本にはもう空きがありません。あと約%s%s必要です。",
+  "text.bookpaste.config.title": "BookPaste設定",
+  "text.bookpaste.config.mode.label": "整形モード",
+  "text.bookpaste.config.mode.button": "モード: %s",
+  "text.bookpaste.config.mode.smart_fill": "スマート分割",
+  "text.bookpaste.config.mode.smart_fill.description": "ページをできるだけ埋めて、はみ出した残りだけを次のページへ送ります。",
+  "text.bookpaste.config.mode.whole_paragraphs": "段落を丸ごと保持",
+  "text.bookpaste.config.mode.whole_paragraphs.description": "次の段落が丸ごと入らない場合は新しいページへ送ります。1段落自体が1ページより長い場合のみ途中で分割します。",
+  "text.bookpaste.unit.page.one": "ページ",
+  "text.bookpaste.unit.page.other": "ページ",
+  "text.bookpaste.unit.book.one": "冊",
+  "text.bookpaste.unit.book.other": "冊",
+  "text.bookpaste.sign.done": "Pasted text across %s %s.",
+  "text.bookpaste.sign.partial": "The sign is full. %s characters remain in the clipboard. About %s more %s needed.",
+  "text.bookpaste.sign.nospace": "There is no space left on this sign. About %s more %s needed.",
+  "text.bookpaste.unit.line.one": "line",
+  "text.bookpaste.unit.line.other": "lines",
+  "text.bookpaste.unit.sign.one": "sign",
+  "text.bookpaste.unit.sign.other": "signs"
+}

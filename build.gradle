@@ -1,0 +1,349 @@
+plugins {
+	id 'base'
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}" apply false
+	id 'net.fabricmc.fabric-loom' version "${loom26_version}" apply false
+}
+
+def versionTargets = [
+	mc2612 : [
+		minecraftVersion   : "26.1.2",
+		fabricApiVersion   : "0.146.1+26.1.2",
+		modmenuVersion     : "18.0.0-alpha.8",
+		versionSuffix      : "26.1-26.1.2",
+		minecraftDependency: ">=26.1 <26.2",
+		javaVersion        : 25,
+		javaDependency     : ">=25",
+		loaderVersion      : "0.19.2",
+		unobfuscated       : true,
+		standaloneSources  : true
+	],
+	mc1161 : [
+		minecraftVersion   : "1.16.1",
+		yarnMappings       : "1.16.1+build.21",
+		fabricApiVersion   : "0.42.0+1.16",
+		modmenuVersion     : "1.16.23",
+		versionSuffix      : "1.16-1.16.1",
+		minecraftDependency: ">=1.16 <1.16.2",
+		javaVersion        : 8,
+		javaDependency     : ">=8",
+		toolchainVersion   : 17,
+		standaloneSources  : true
+	],
+	mc1165 : [
+		minecraftVersion   : "1.16.5",
+		yarnMappings       : "1.16.5+build.10",
+		fabricApiVersion   : "0.42.0+1.16",
+		modmenuVersion     : "1.16.23",
+		versionSuffix      : "1.16.2-1.16.5",
+		minecraftDependency: ">=1.16.2 <1.17",
+		javaVersion        : 8,
+		javaDependency     : ">=8",
+		toolchainVersion   : 17,
+		standaloneSources  : true
+	],
+	mc1171 : [
+		minecraftVersion   : "1.17.1",
+		yarnMappings       : "1.17.1+build.65",
+		fabricApiVersion   : "0.46.1+1.17",
+		modmenuVersion     : "2.1.2",
+		versionSuffix      : "1.17-1.17.1",
+		minecraftDependency: ">=1.17 <1.18",
+		javaVersion        : 16,
+		javaDependency     : ">=16",
+		toolchainVersion   : 17,
+		standaloneSources  : true
+	],
+	mc1181 : [
+		minecraftVersion   : "1.18.1",
+		yarnMappings       : "1.18.1+build.22",
+		fabricApiVersion   : "0.46.6+1.18",
+		modmenuVersion     : "3.2.5",
+		versionSuffix      : "1.18-1.18.1",
+		minecraftDependency: ">=1.18 <1.18.2",
+		javaVersion        : 17,
+		javaDependency     : ">=17",
+		standaloneSources  : true
+	],
+	mc1182 : [
+		minecraftVersion   : "1.18.2",
+		yarnMappings       : "1.18.2+build.4",
+		fabricApiVersion   : "0.77.0+1.18.2",
+		modmenuVersion     : "3.2.5",
+		versionSuffix      : "1.18.2",
+		minecraftDependency: ">=1.18.2 <1.19",
+		javaVersion        : 17,
+		javaDependency     : ">=17",
+		standaloneSources  : true
+	],
+	mc1192 : [
+		minecraftVersion   : "1.19.2",
+		yarnMappings       : "1.19.2+build.28",
+		fabricApiVersion   : "0.76.1+1.19.2",
+		modmenuVersion     : "4.1.2",
+		versionSuffix      : "1.19-1.19.2",
+		minecraftDependency: ">=1.19 <1.19.3",
+		javaVersion        : 17,
+		javaDependency     : ">=17"
+	],
+	mc1193 : [
+		minecraftVersion   : "1.19.3",
+		yarnMappings       : "1.19.3+build.5",
+		fabricApiVersion   : "0.76.1+1.19.3",
+		modmenuVersion     : "5.0.2",
+		versionSuffix      : "1.19.3",
+		minecraftDependency: ">=1.19.3 <1.19.4",
+		javaVersion        : 17,
+		javaDependency     : ">=17"
+	],
+	mc1194 : [
+		minecraftVersion   : "1.19.4",
+		yarnMappings       : "1.19.4+build.2",
+		fabricApiVersion   : "0.87.2+1.19.4",
+		modmenuVersion     : "6.3.1",
+		versionSuffix      : "1.19.4",
+		minecraftDependency: ">=1.19.4 <1.20",
+		javaVersion        : 17,
+		javaDependency     : ">=17"
+	],
+	mc1201 : [
+		minecraftVersion   : "1.20.1",
+		yarnMappings       : "1.20.1+build.10",
+		fabricApiVersion   : "0.92.7+1.20.1",
+		modmenuVersion     : "7.2.2",
+		versionSuffix      : "1.20-1.20.1",
+		minecraftDependency: ">=1.20 <1.20.2",
+		javaVersion        : 17,
+		javaDependency     : ">=17"
+	],
+	mc1204 : [
+		minecraftVersion   : "1.20.4",
+		yarnMappings       : "1.20.4+build.3",
+		fabricApiVersion   : "0.97.3+1.20.4",
+		modmenuVersion     : "9.2.0",
+		versionSuffix      : "1.20.2-1.20.4",
+		minecraftDependency: ">=1.20.2 <1.20.5",
+		javaVersion        : 17,
+		javaDependency     : ">=17"
+	],
+	mc1206 : [
+		minecraftVersion   : "1.20.6",
+		yarnMappings       : "1.20.6+build.3",
+		fabricApiVersion   : "0.100.8+1.20.6",
+		modmenuVersion     : "10.0.0",
+		versionSuffix      : "1.20.5-1.20.6",
+		minecraftDependency: ">=1.20.5 <1.20.7",
+		javaVersion        : 21,
+		javaDependency     : ">=21"
+	],
+	mc1214 : [
+		minecraftVersion   : "1.21.4",
+		yarnMappings       : "1.21.4+build.8",
+		fabricApiVersion   : "0.119.4+1.21.4",
+		modmenuVersion     : "13.0.4",
+		versionSuffix      : "1.21-1.21.4",
+		minecraftDependency: ">=1.21 <1.21.5",
+		javaVersion        : 21,
+		javaDependency     : ">=21"
+	],
+	mc1218 : [
+		minecraftVersion   : "1.21.8",
+		yarnMappings       : "1.21.8+build.1",
+		fabricApiVersion   : "0.136.1+1.21.8",
+		modmenuVersion     : "15.0.2",
+		versionSuffix      : "1.21.5-1.21.8",
+		minecraftDependency: ">=1.21.5 <1.21.9",
+		javaVersion        : 21,
+		javaDependency     : ">=21"
+	],
+	mc12110: [
+		minecraftVersion   : "1.21.10",
+		yarnMappings       : "1.21.10+build.3",
+		fabricApiVersion   : "0.138.4+1.21.10",
+		modmenuVersion     : "16.0.0",
+		versionSuffix      : "1.21.9-1.21.10",
+		minecraftDependency: ">=1.21.9 <1.21.11",
+		javaVersion        : 21,
+		javaDependency     : ">=21"
+	],
+	mc12111: [
+		minecraftVersion   : "1.21.11",
+		yarnMappings       : "1.21.11+build.4",
+		fabricApiVersion   : "0.141.3+1.21.11",
+		modmenuVersion     : "17.0.0",
+		versionSuffix      : "1.21.11",
+		minecraftDependency: ">=1.21.11 <26.1",
+		javaVersion        : 21,
+		javaDependency     : ">=21"
+	]
+]
+
+def sharedJava = rootProject.layout.projectDirectory.dir("src/main/java").asFile
+def sharedResources = rootProject.layout.projectDirectory.dir("src/main/resources").asFile
+
+tasks.register("exportBuildSources", Exec) {
+	workingDir = rootProject.projectDir
+	commandLine "powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+		rootProject.file("tools/export-build-sources.ps1").absolutePath,
+		"-ProjectRoot", rootProject.projectDir.absolutePath
+}
+
+subprojects {
+	repositories {
+		mavenCentral()
+		maven {
+			name = "Fabric"
+			url = "https://maven.fabricmc.net/"
+		}
+		maven {
+			name = "Terraformers"
+			url = "https://maven.terraformersmc.com/"
+		}
+		maven {
+			name = "Nucleoid"
+			url = "https://maven.nucleoid.xyz/"
+		}
+	}
+}
+
+versionTargets.each { moduleName, cfg ->
+	project(":${moduleName}") {
+		apply plugin: cfg.unobfuscated ? 'net.fabricmc.fabric-loom' : 'net.fabricmc.fabric-loom-remap'
+		apply plugin: 'maven-publish'
+
+		version = "${rootProject.mod_version}+${cfg.versionSuffix}"
+		group = rootProject.maven_group
+
+		base {
+			archivesName = rootProject.archives_base_name
+		}
+
+		sourceSets {
+			main {
+				java {
+					srcDirs = cfg.standaloneSources ? [
+						project.layout.projectDirectory.dir("src/main/java").asFile
+					] : [
+						project.layout.projectDirectory.dir("src/main/java").asFile,
+						sharedJava
+					]
+				}
+				resources {
+					srcDirs = cfg.standaloneSources ? [
+						project.layout.projectDirectory.dir("src/main/resources").asFile
+					] : [
+						project.layout.projectDirectory.dir("src/main/resources").asFile,
+						sharedResources
+					]
+				}
+			}
+		}
+
+		if (moduleName in ["mc1161", "mc1165", "mc1171", "mc1181", "mc1182", "mc1192", "mc1193", "mc1194", "mc1201", "mc1204", "mc1206", "mc1214"]) {
+			sourceSets.main.java.exclude("ru/svyaton/bookpaste/mixin/BookEditScreenModernMixin.java")
+		}
+
+		if (moduleName in ["mc1214", "mc1218", "mc12110", "mc12111"]) {
+			sourceSets.main.java.exclude("ru/svyaton/bookpaste/BookPasteBookLimits.java")
+		}
+
+		dependencies {
+			minecraft "com.mojang:minecraft:${cfg.minecraftVersion}"
+			if (!cfg.unobfuscated) {
+				mappings "net.fabricmc:yarn:${cfg.yarnMappings}:v2"
+				modImplementation "net.fabricmc:fabric-loader:${cfg.loaderVersion ?: rootProject.loader_version}"
+				modImplementation "net.fabricmc.fabric-api:fabric-api:${cfg.fabricApiVersion}"
+				modCompileOnly "com.terraformersmc:modmenu:${cfg.modmenuVersion}"
+			} else {
+				implementation "net.fabricmc:fabric-loader:${cfg.loaderVersion ?: rootProject.loader_version}"
+				implementation "net.fabricmc.fabric-api:fabric-api:${cfg.fabricApiVersion}"
+				compileOnly "com.terraformersmc:modmenu:${cfg.modmenuVersion}"
+			}
+		}
+
+		tasks.withType(JavaCompile).configureEach {
+			it.options.release = cfg.releaseVersion ?: cfg.javaVersion
+			it.options.encoding = "UTF-8"
+		}
+
+		tasks.named("compileJava", JavaCompile) {
+			if (!cfg.standaloneSources && moduleName in ["mc1201", "mc1204", "mc1206", "mc1214", "mc1218", "mc12110", "mc12111"]) {
+				it.source = files(
+					project.layout.projectDirectory.dir("src/main/java").asFile,
+					fileTree(sharedJava) {
+						exclude "ru/svyaton/bookpaste/PasteHelper.java"
+						if (moduleName in ["mc1214", "mc1218", "mc12110", "mc12111"]) {
+							exclude "ru/svyaton/bookpaste/BookPasteBookLimits.java"
+						}
+						if (moduleName in ["mc1201", "mc1204", "mc1206", "mc1214"]) {
+							exclude "ru/svyaton/bookpaste/mixin/BookEditScreenModernMixin.java"
+						}
+					}
+				)
+			}
+		}
+
+		java {
+			toolchain.languageVersion = JavaLanguageVersion.of(cfg.toolchainVersion ?: cfg.javaVersion)
+			withSourcesJar()
+		}
+
+		processResources {
+			inputs.property "version", project.version
+			inputs.property "minecraft_dependency", cfg.minecraftDependency
+			inputs.property "java_dependency", cfg.javaDependency
+			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+			filesMatching("fabric.mod.json") {
+				expand(
+					version: project.version,
+					minecraft_dependency: cfg.minecraftDependency,
+					java_dependency: cfg.javaDependency
+				)
+			}
+		}
+
+		jar {
+			from(rootProject.file("LICENSE"))
+			from(moduleName in ["mc1214", "mc1218", "mc12110", "mc12111"] ? project.file("NOTICE") : rootProject.file("NOTICE"))
+			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		}
+
+		tasks.named("sourcesJar") {
+			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+		}
+
+		tasks.named("assemble") {
+			dependsOn rootProject.tasks.named("exportBuildSources")
+		}
+
+		tasks.named("build") {
+			dependsOn rootProject.tasks.named("exportBuildSources")
+		}
+
+		if (cfg.unobfuscated) {
+			tasks.named("jar") {
+				destinationDirectory = rootProject.layout.buildDirectory.dir("libs").get().asFile
+			}
+
+			tasks.named("sourcesJar") {
+				destinationDirectory = rootProject.layout.buildDirectory.dir("libs").get().asFile
+			}
+		} else {
+			tasks.named("remapJar") {
+				destinationDirectory = rootProject.layout.buildDirectory.dir("libs").get().asFile
+			}
+
+			tasks.named("remapSourcesJar") {
+				destinationDirectory = rootProject.layout.buildDirectory.dir("libs").get().asFile
+			}
+		}
+	}
+}
+
+tasks.named("assemble") {
+	dependsOn(versionTargets.keySet().collect { ":${it}:assemble" })
+}
+
+tasks.named("build") {
+	dependsOn(versionTargets.keySet().collect { ":${it}:build" })
+}

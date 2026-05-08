@@ -1,0 +1,23 @@
+﻿{
+  "text.bookpaste.done": "е·Іе°†ж–‡жњ¬зІиґґе€°%s%sдё­гЂ‚",
+  "text.bookpaste.partial": "иї™жњ¬д№¦е·Іж»ЎгЂ‚е‰Єиґґжќїдё­иїе‰©%sдёЄе­—з¬¦гЂ‚е¤§зє¦иїйњЂи¦Ѓ%s%sгЂ‚",
+  "text.bookpaste.nospace": "иї™жњ¬д№¦е·Із»ЏжІЎжњ‰з©єй—ґдє†гЂ‚е¤§зє¦иїйњЂи¦Ѓ%s%sгЂ‚",
+  "text.bookpaste.config.title": "BookPaste设置",
+  "text.bookpaste.config.mode.label": "排版模式",
+  "text.bookpaste.config.mode.button": "模式：%s",
+  "text.bookpaste.config.mode.smart_fill": "智能填充",
+  "text.bookpaste.config.mode.smart_fill.description": "尽可能填满当前页面，只把剩余尾部移到下一页。",
+  "text.bookpaste.config.mode.whole_paragraphs": "仅完整段落",
+  "text.bookpaste.config.mode.whole_paragraphs.description": "如果下一段无法完整放下，就把整段移到新的一页。只有单个段落本身超过一页时才会被拆分。",
+  "text.bookpaste.unit.page.one": "页",
+  "text.bookpaste.unit.page.other": "页",
+  "text.bookpaste.unit.book.one": "本书",
+  "text.bookpaste.unit.book.other": "本书",
+  "text.bookpaste.sign.done": "Pasted text across %s %s.",
+  "text.bookpaste.sign.partial": "The sign is full. %s characters remain in the clipboard. About %s more %s needed.",
+  "text.bookpaste.sign.nospace": "There is no space left on this sign. About %s more %s needed.",
+  "text.bookpaste.unit.line.one": "line",
+  "text.bookpaste.unit.line.other": "lines",
+  "text.bookpaste.unit.sign.one": "sign",
+  "text.bookpaste.unit.sign.other": "signs"
+}

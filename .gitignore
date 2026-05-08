@@ -1,15 +1,27 @@
+# Gradle
 .gradle/
 build/
+
+# IDEs
+.idea/
 out/
-run/
-*.classpath
-*.project
+*.ipr
 *.iws
 *.iml
-*.ipr
-.idea/
+.classpath
+.project
+.settings/
+bin/
 .vscode/
+
+# Project Specific
+run/
 temp/
 build-source-snapshots/
 билды для выкладки/
+
+# Cloud Storage / OS
 .tmp.driveupload/
+.tmp.drivedownload/
+.DS_Store
+*.log

@@ -1,0 +1,24 @@
+﻿{
+  "text.bookpaste.done": "Texto colado em %s %s.",
+  "text.bookpaste.partial": "O livro esta cheio. Restam %s caracteres na area de transferencia. Sao necessarios cerca de %s %s a mais.",
+  "text.bookpaste.nospace": "Nao ha mais espaco neste livro. Sao necessarios cerca de %s %s a mais.",
+  "text.bookpaste.config.title": "Configuracoes do BookPaste",
+  "text.bookpaste.config.mode.label": "Modo de formatacao",
+  "text.bookpaste.config.mode.button": "Modo: %s",
+  "text.bookpaste.config.mode.smart_fill": "Preenchimento inteligente",
+  "text.bookpaste.config.mode.smart_fill.description": "Preenche a pagina o maximo possivel e move apenas o restante para a proxima pagina.",
+  "text.bookpaste.config.mode.whole_paragraphs": "Paragrafos inteiros",
+  "text.bookpaste.config.mode.whole_paragraphs.description": "Se o proximo paragrafo nao couber inteiro, ele vai para uma nova pagina. Um paragrafo so e dividido se ele sozinho for maior que uma pagina.",
+  "text.bookpaste.unit.page.one": "pagina",
+  "text.bookpaste.unit.page.other": "paginas",
+  "text.bookpaste.unit.book.one": "livro",
+  "text.bookpaste.unit.book.other": "livros",
+  "text.bookpaste.sign.done": "Pasted text across %s %s.",
+  "text.bookpaste.sign.partial": "The sign is full. %s characters remain in the clipboard. About %s more %s needed.",
+  "text.bookpaste.sign.nospace": "There is no space left on this sign. About %s more %s needed.",
+  "text.bookpaste.unit.line.one": "line",
+  "text.bookpaste.unit.line.other": "lines",
+  "text.bookpaste.unit.sign.one": "sign",
+  "text.bookpaste.unit.sign.other": "signs"
+}
+

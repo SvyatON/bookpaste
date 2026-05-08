@@ -1,0 +1,15 @@
+.gradle/
+build/
+out/
+run/
+*.classpath
+*.project
+*.iws
+*.iml
+*.ipr
+.idea/
+.vscode/
+temp/
+build-source-snapshots/
+билды для выкладки/
+.tmp.driveupload/

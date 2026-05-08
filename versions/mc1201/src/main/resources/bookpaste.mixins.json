@@ -1,0 +1,15 @@
+﻿{
+  "required": true,
+  "package": "ru.svyaton.bookpaste.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "BookEditScreenLegacyMixin",
+    "AbstractSignEditScreenMixin",
+    "EditBoxMixin",
+    "ScholarFormattedStringEditorMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+

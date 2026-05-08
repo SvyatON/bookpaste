@@ -1,11 +1,12 @@
-﻿{
+{
   "required": true,
   "package": "ru.svyaton.bookpaste.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
     "BookEditScreenModernMixin",
     "EditBoxMixin",
-    "ScholarFormattedStringEditorMixin"
+    "ScholarFormattedStringEditorMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

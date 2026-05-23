@@ -80,7 +80,9 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
         }
 
         client.keyboardHandler.setClipboard(result.remaining());
-        this.owner.sendOverlayMessage(this.bookpaste$createStatusMessage(result, client));
+        if (this.owner != null) {
+            this.owner.sendOverlayMessage(this.bookpaste$createStatusMessage(result, client));
+        }
         return true;
     }
 

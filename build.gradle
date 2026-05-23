@@ -7,7 +7,7 @@ plugins {
 def versionTargets = [
 	mc2612 : [
 		minecraftVersion   : "26.1.2",
-		fabricApiVersion   : "0.146.1+26.1.2",
+		fabricApiVersion   : "0.148.0+26.1.2",
 		modmenuVersion     : "18.0.0-alpha.8",
 		versionSuffix      : "26.1-26.1.2",
 		minecraftDependency: ">=26.1 <26.2",

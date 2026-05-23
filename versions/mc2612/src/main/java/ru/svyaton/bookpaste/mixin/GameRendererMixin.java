@@ -22,4 +22,11 @@ public abstract class GameRendererMixin {
             ci.cancel();
         }
     }
+
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void bookpaste$preventCrashInTick(CallbackInfo ci) {
+        if (this.minecraft == null || this.minecraft.player == null) {
+            ci.cancel();
+        }
+    }
 }

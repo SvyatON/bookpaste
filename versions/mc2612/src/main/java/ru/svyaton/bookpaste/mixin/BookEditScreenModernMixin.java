@@ -42,8 +42,18 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
     @Shadow
     private MultiLineEditBox page;
 
-    @Shadow
-    private boolean isModified;
+    @Unique
+    private void bookpaste$setModified(boolean value) {
+        for (String fieldName : new String[]{"isModified", "dirty", "field_2181"}) {
+            try {
+                java.lang.reflect.Field field = BookEditScreen.class.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                field.set(this, value);
+                break;
+            } catch (Throwable ignored) {
+            }
+        }
+    }
 
     @Shadow
     private void updatePageContent() {
@@ -131,7 +141,7 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
             this.pages.addAll(workingPages);
             this.currentPage = lastTouchedPage;
             this.updatePageContent();
-            this.isModified = true;
+            this.bookpaste$setModified(true);
             this.updateButtonVisibility();
         }
 
@@ -174,7 +184,7 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
         this.pages.addAll(pages);
         this.currentPage = currentPage;
         this.updatePageContent();
-        this.isModified = true;
+        this.bookpaste$setModified(true);
         this.updateButtonVisibility();
     }
 

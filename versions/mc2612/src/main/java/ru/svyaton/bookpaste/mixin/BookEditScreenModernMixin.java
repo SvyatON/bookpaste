@@ -43,7 +43,7 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
     private MultiLineEditBox page;
 
     @Shadow
-    private boolean dirty;
+    private boolean isModified;
 
     @Shadow
     private void updatePageContent() {
@@ -131,7 +131,7 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
             this.pages.addAll(workingPages);
             this.currentPage = lastTouchedPage;
             this.updatePageContent();
-            this.dirty = true;
+            this.isModified = true;
             this.updateButtonVisibility();
         }
 
@@ -174,7 +174,7 @@ abstract class BookEditScreenModernMixin implements BookPasteScreenHandler, Book
         this.pages.addAll(pages);
         this.currentPage = currentPage;
         this.updatePageContent();
-        this.dirty = true;
+        this.isModified = true;
         this.updateButtonVisibility();
     }
 

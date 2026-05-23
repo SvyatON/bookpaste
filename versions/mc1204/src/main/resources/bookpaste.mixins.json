@@ -1,4 +1,4 @@
-﻿{
+{
   "required": true,
   "package": "ru.svyaton.bookpaste.mixin",
   "compatibilityLevel": "JAVA_17",
@@ -12,4 +12,3 @@
     "defaultRequire": 1
   }
 }
-

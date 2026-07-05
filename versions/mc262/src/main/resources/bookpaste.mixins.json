@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "ru.svyaton.bookpaste.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "AbstractSignEditScreenMixin",
+    "BookEditScreenModernMixin",
+    "DebugRendererMixin",
+    "EditBoxMixin",
+    "GameRendererMixin",
+    "ItemInHandRendererMixin",
+    "MultiPlayerGameModeMixin",
+    "ScholarFormattedStringEditorMixin",
+    "ScribbleRichEditBoxMixin",
+    "SkyRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

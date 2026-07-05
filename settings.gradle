@@ -1,0 +1,52 @@
+pluginManagement {
+	repositories {
+		maven {
+			name = "Fabric"
+			url = "https://maven.fabricmc.net/"
+		}
+		gradlePluginPortal()
+		mavenCentral()
+	}
+}
+
+plugins {
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = "bookpaste"
+
+include("mc1192")
+include("mc1193")
+include("mc1194")
+include("mc1161")
+include("mc1165")
+include("mc1171")
+include("mc1181")
+include("mc1182")
+include("mc2612")
+include("mc262")
+include("mc1214")
+include("mc1218")
+include("mc12110")
+include("mc12111")
+include("mc1201")
+include("mc1204")
+include("mc1206")
+
+project(":mc1192").projectDir = file("versions/mc1192")
+project(":mc1193").projectDir = file("versions/mc1193")
+project(":mc1194").projectDir = file("versions/mc1194")
+project(":mc1161").projectDir = file("versions/mc1161")
+project(":mc1165").projectDir = file("versions/mc1165")
+project(":mc1171").projectDir = file("versions/mc1171")
+project(":mc1181").projectDir = file("versions/mc1181")
+project(":mc1182").projectDir = file("versions/mc1182")
+project(":mc2612").projectDir = file("versions/mc2612")
+project(":mc262").projectDir = file("versions/mc262")
+project(":mc1214").projectDir = file("versions/mc1214")
+project(":mc1218").projectDir = file("versions/mc1218")
+project(":mc12110").projectDir = file("versions/mc12110")
+project(":mc12111").projectDir = file("versions/mc12111")
+project(":mc1201").projectDir = file("versions/mc1201")
+project(":mc1204").projectDir = file("versions/mc1204")
+project(":mc1206").projectDir = file("versions/mc1206")

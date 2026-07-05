@@ -1,0 +1,18 @@
+# Gradle
+.gradle/
+build/
+
+# IDEs
+.idea/
+out/
+.vscode/
+
+# Project Specific
+run/
+temp/
+build-source-snapshots/
+билды для выкладки/
+
+# Google Drive sync files
+.tmp.driveupload/
+.tmp.drivedownload/

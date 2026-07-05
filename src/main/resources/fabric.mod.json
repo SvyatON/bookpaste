@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "bookpaste",
+  "version": "${version}",
+  "name": "BookPaste",
+  "description": "Paste large texts into writable books and signs with automatic page splitting.",
+  "authors": [
+    "SvyatON"
+  ],
+  "icon": "assets/bookpaste/icon.png",
+  "contact": {
+    "homepage": "https://modrinth.com/mod/bookpaste",
+    "issues": "https://github.com/SvyatON/bookpaste/issues",
+    "sources": "https://github.com/SvyatON/bookpaste"
+  },
+  "license": "Apache-2.0",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ru.svyaton.bookpaste.BookPasteClient"
+    ],
+    "modmenu": [
+      "ru.svyaton.bookpaste.BookPasteModMenu"
+    ]
+  },
+  "mixins": [
+    "bookpaste.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "fabric-key-binding-api-v1": "*",
+    "fabric-lifecycle-events-v1": "*",
+    "minecraft": "${minecraft_dependency}",
+    "java": "${java_dependency}"
+  }
+}

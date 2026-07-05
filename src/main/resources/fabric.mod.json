@@ -3,7 +3,7 @@
   "id": "bookpaste",
   "version": "${version}",
   "name": "BookPaste",
-  "description": "Paste large texts into writable books with automatic page splitting.",
+  "description": "Paste large texts into writable books and signs with automatic page splitting.",
   "authors": [
     "SvyatON"
   ],

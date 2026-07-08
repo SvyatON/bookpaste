@@ -25,7 +25,7 @@ Paste large texts directly into writable books and signs with automatic formatti
 
 ## ⚙️ Compatibility
 
-- **Minecraft:** `1.16.1` up to `26.1.2`.
+- **Minecraft:** `1.16.1` up to `26.2`.
 - **Mod Loaders:** Fabric.
 - Built with a unified multi-version architecture ensuring identical behavior across all supported versions.
 - Compatible with popular book and sign improvement mods (e.g., Scholar, Scribble).

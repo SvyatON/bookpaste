@@ -89,7 +89,7 @@ public final class ScribbleCompat {
 
             if (changed) {
                 access.bookpaste$setPagesAndCurrentPage(workingPages, lastTouchedPage);
-                
+
                 boolean updatedNewScribble = false;
                 try {
                     Object synchronizedPages = getFieldValue(screen, "synchronizedPages");
@@ -97,16 +97,16 @@ public final class ScribbleCompat {
                         Method populateMethod = findMethod(synchronizedPages.getClass(), "populate", List.class);
                         populateMethod.setAccessible(true);
                         populateMethod.invoke(synchronizedPages, workingPages);
-                        
+
                         Class<?> richTextClass = screen.getClass().getClassLoader().loadClass("me.chrr.scribble.book.RichText");
                         Method fromFormattedString = findMethod(richTextClass, "fromFormattedString", String.class);
                         fromFormattedString.setAccessible(true);
                         Object richText = fromFormattedString.invoke(null, workingPages.get(lastTouchedPage));
-                        
+
                         Method setPageTextMethod = findMethod(screen.getClass(), "setPageText", richTextClass);
                         setPageTextMethod.setAccessible(true);
                         setPageTextMethod.invoke(screen, richText);
-                        
+
                         try {
                             Object selectionManager = getFieldValue(screen, "f_98072_");
                             if (selectionManager == null) {
@@ -125,12 +125,12 @@ public final class ScribbleCompat {
                             }
                         } catch (Exception ignored) {
                         }
-                        
+
                         updatedNewScribble = true;
                     }
                 } catch (Exception ignored) {
                 }
-                
+
                 if (!updatedNewScribble) {
                     setOptionalFieldValue(screen, "scribble$dirty", true);
                 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "text.bookpaste.done": "Текст вставлено на %s %s.",
   "text.bookpaste.partial": "Книга закінчилася. У буфері залишилося %s символів. Знадобиться ще приблизно %s %s.",
   "text.bookpaste.nospace": "У цій книзі більше немає місця. Знадобиться ще приблизно %s %s.",
@@ -9,15 +9,6 @@
   "text.bookpaste.config.mode.smart_fill.description": "Максимально заповнює сторінку і переносить на наступну лише залишок тексту.",
   "text.bookpaste.config.mode.whole_paragraphs": "Лише цілі абзаци",
   "text.bookpaste.config.mode.whole_paragraphs.description": "Якщо наступний абзац не вміщується повністю, він переноситься на нову сторінку. Абзац ділиться лише якщо він сам довший за одну сторінку.",
-  "text.bookpaste.config.hotkey.label": "Гаряча клавіша швидкого перемикання",
-  "text.bookpaste.config.hotkey.button": "Клавіша: %s",
-  "text.bookpaste.config.hotkey.listening": "Натисніть клавішу або кнопку миші...",
-  "text.bookpaste.config.hotkey.reset": "Скинути",
-  "text.bookpaste.config.hotkey.controls": "Відкрити керування",
-  "text.bookpaste.mode.changed": "BookPaste: режим вставки: %s",
-  "key.bookpaste.toggle_format_mode": "Переключити режим вставки",
-  "key.category.bookpaste.controls": "BookPaste",
-  "category.bookpaste.controls": "BookPaste",
   "text.bookpaste.unit.page.one": "сторінку",
   "text.bookpaste.unit.page.few": "сторінки",
   "text.bookpaste.unit.page.many": "сторінок",

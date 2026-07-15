@@ -17,18 +17,6 @@ def versionTargets = [
 		unobfuscated       : true,
 		standaloneSources  : true
 	],
-	mc262 : [
-		minecraftVersion   : "26.2",
-		fabricApiVersion   : "0.154.0+26.2",
-		modmenuVersion     : "20.0.0-beta.4",
-		versionSuffix      : "26.2",
-		minecraftDependency: ">=26.2 <26.3",
-		javaVersion        : 25,
-		javaDependency     : ">=25",
-		loaderVersion      : "0.19.3",
-		unobfuscated       : true,
-		standaloneSources  : true
-	],
 	mc1161 : [
 		minecraftVersion   : "1.16.1",
 		yarnMappings       : "1.16.1+build.21",
@@ -38,7 +26,7 @@ def versionTargets = [
 		minecraftDependency: ">=1.16 <1.16.2",
 		javaVersion        : 8,
 		javaDependency     : ">=8",
-		toolchainVersion   : 17,
+		toolchainVersion   : 25,
 		standaloneSources  : true
 	],
 	mc1165 : [
@@ -50,7 +38,7 @@ def versionTargets = [
 		minecraftDependency: ">=1.16.2 <1.17",
 		javaVersion        : 8,
 		javaDependency     : ">=8",
-		toolchainVersion   : 17,
+		toolchainVersion   : 25,
 		standaloneSources  : true
 	],
 	mc1171 : [
@@ -62,7 +50,7 @@ def versionTargets = [
 		minecraftDependency: ">=1.17 <1.18",
 		javaVersion        : 16,
 		javaDependency     : ">=16",
-		toolchainVersion   : 17,
+		toolchainVersion   : 25,
 		standaloneSources  : true
 	],
 	mc1181 : [
@@ -74,6 +62,7 @@ def versionTargets = [
 		minecraftDependency: ">=1.18 <1.18.2",
 		javaVersion        : 17,
 		javaDependency     : ">=17",
+		toolchainVersion   : 25,
 		standaloneSources  : true
 	],
 	mc1182 : [
@@ -85,6 +74,7 @@ def versionTargets = [
 		minecraftDependency: ">=1.18.2 <1.19",
 		javaVersion        : 17,
 		javaDependency     : ">=17",
+		toolchainVersion   : 25,
 		standaloneSources  : true
 	],
 	mc1192 : [
@@ -95,7 +85,8 @@ def versionTargets = [
 		versionSuffix      : "1.19-1.19.2",
 		minecraftDependency: ">=1.19 <1.19.3",
 		javaVersion        : 17,
-		javaDependency     : ">=17"
+		javaDependency     : ">=17",
+		toolchainVersion   : 25
 	],
 	mc1193 : [
 		minecraftVersion   : "1.19.3",
@@ -105,7 +96,8 @@ def versionTargets = [
 		versionSuffix      : "1.19.3",
 		minecraftDependency: ">=1.19.3 <1.19.4",
 		javaVersion        : 17,
-		javaDependency     : ">=17"
+		javaDependency     : ">=17",
+		toolchainVersion   : 25
 	],
 	mc1194 : [
 		minecraftVersion   : "1.19.4",
@@ -115,7 +107,8 @@ def versionTargets = [
 		versionSuffix      : "1.19.4",
 		minecraftDependency: ">=1.19.4 <1.20",
 		javaVersion        : 17,
-		javaDependency     : ">=17"
+		javaDependency     : ">=17",
+		toolchainVersion   : 25
 	],
 	mc1201 : [
 		minecraftVersion   : "1.20.1",
@@ -125,7 +118,8 @@ def versionTargets = [
 		versionSuffix      : "1.20-1.20.1",
 		minecraftDependency: ">=1.20 <1.20.2",
 		javaVersion        : 17,
-		javaDependency     : ">=17"
+		javaDependency     : ">=17",
+		toolchainVersion   : 25
 	],
 	mc1204 : [
 		minecraftVersion   : "1.20.4",
@@ -135,7 +129,8 @@ def versionTargets = [
 		versionSuffix      : "1.20.2-1.20.4",
 		minecraftDependency: ">=1.20.2 <1.20.5",
 		javaVersion        : 17,
-		javaDependency     : ">=17"
+		javaDependency     : ">=17",
+		toolchainVersion   : 25
 	],
 	mc1206 : [
 		minecraftVersion   : "1.20.6",
@@ -145,7 +140,8 @@ def versionTargets = [
 		versionSuffix      : "1.20.5-1.20.6",
 		minecraftDependency: ">=1.20.5 <1.20.7",
 		javaVersion        : 21,
-		javaDependency     : ">=21"
+		javaDependency     : ">=21",
+		toolchainVersion   : 25
 	],
 	mc1214 : [
 		minecraftVersion   : "1.21.4",
@@ -155,7 +151,8 @@ def versionTargets = [
 		versionSuffix      : "1.21-1.21.4",
 		minecraftDependency: ">=1.21 <1.21.5",
 		javaVersion        : 21,
-		javaDependency     : ">=21"
+		javaDependency     : ">=21",
+		toolchainVersion   : 25
 	],
 	mc1218 : [
 		minecraftVersion   : "1.21.8",
@@ -165,7 +162,8 @@ def versionTargets = [
 		versionSuffix      : "1.21.5-1.21.8",
 		minecraftDependency: ">=1.21.5 <1.21.9",
 		javaVersion        : 21,
-		javaDependency     : ">=21"
+		javaDependency     : ">=21",
+		toolchainVersion   : 25
 	],
 	mc12110: [
 		minecraftVersion   : "1.21.10",
@@ -175,7 +173,8 @@ def versionTargets = [
 		versionSuffix      : "1.21.9-1.21.10",
 		minecraftDependency: ">=1.21.9 <1.21.11",
 		javaVersion        : 21,
-		javaDependency     : ">=21"
+		javaDependency     : ">=21",
+		toolchainVersion   : 25
 	],
 	mc12111: [
 		minecraftVersion   : "1.21.11",
@@ -185,7 +184,8 @@ def versionTargets = [
 		versionSuffix      : "1.21.11",
 		minecraftDependency: ">=1.21.11 <26.1",
 		javaVersion        : 21,
-		javaDependency     : ">=21"
+		javaDependency     : ">=21",
+		toolchainVersion   : 25
 	]
 ]
 
@@ -210,10 +210,10 @@ subprojects {
 			name = "Terraformers"
 			url = "https://maven.terraformersmc.com/"
 		}
-//		maven {
-//			name = "Nucleoid"
-//			url = "https://maven.nucleoid.xyz/"
-//		}
+		maven {
+			name = "Nucleoid"
+			url = "https://maven.nucleoid.xyz/"
+		}
 	}
 }
 
@@ -264,15 +264,11 @@ versionTargets.each { moduleName, cfg ->
 				mappings "net.fabricmc:yarn:${cfg.yarnMappings}:v2"
 				modImplementation "net.fabricmc:fabric-loader:${cfg.loaderVersion ?: rootProject.loader_version}"
 				modImplementation "net.fabricmc.fabric-api:fabric-api:${cfg.fabricApiVersion}"
-				modCompileOnly("com.terraformersmc:modmenu:${cfg.modmenuVersion}") {
-					transitive = false
-				}
+				modCompileOnly "com.terraformersmc:modmenu:${cfg.modmenuVersion}"
 			} else {
 				implementation "net.fabricmc:fabric-loader:${cfg.loaderVersion ?: rootProject.loader_version}"
 				implementation "net.fabricmc.fabric-api:fabric-api:${cfg.fabricApiVersion}"
-				compileOnly("com.terraformersmc:modmenu:${cfg.modmenuVersion}") {
-					transitive = false
-				}
+				compileOnly "com.terraformersmc:modmenu:${cfg.modmenuVersion}"
 			}
 		}
 

@@ -24,8 +24,8 @@ public final class SignPasteCompat {
         }
 
         try {
-            Field rowField = findField(screen.getClass(), int.class, "currentRow", "line", "field_3029", "field_40428");
-            Field messagesField = findField(screen.getClass(), String[].class, "messages", "text", "field_24285", "field_40425");
+            Field rowField = findField(screen.getClass(), "currentRow", "line", "field_3029", "field_40428");
+            Field messagesField = findField(screen.getClass(), "messages", "text", "field_24285", "field_40425");
             String[] messages = (String[]) messagesField.get(screen);
             if (messages == null || messages.length == 0) {
                 return false;
@@ -82,22 +82,20 @@ public final class SignPasteCompat {
         return Math.max(min, Math.min(max, value));
     }
 
-    private static Field findField(Class<?> type, Class<?> expectedType, String... names) throws NoSuchFieldException {
+    private static Field findField(Class<?> type, String... names) throws NoSuchFieldException {
         Class<?> current = type;
         while (current != null) {
             for (String name : names) {
                 try {
                     Field field = current.getDeclaredField(name);
-                    if (expectedType == null || expectedType.isAssignableFrom(field.getType())) {
-                        field.setAccessible(true);
-                        return field;
-                    }
+                    field.setAccessible(true);
+                    return field;
                 } catch (NoSuchFieldException ignored) {
                 }
             }
             current = current.getSuperclass();
         }
-        throw new NoSuchFieldException(String.join(", ", names) + " of type " + (expectedType != null ? expectedType.getName() : "any"));
+        throw new NoSuchFieldException(String.join(", ", names));
     }
 
     private static Method findMethod(Class<?> type, Class<?> argument, String... names) {

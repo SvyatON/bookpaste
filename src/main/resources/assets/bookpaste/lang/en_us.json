@@ -1,4 +1,4 @@
-{
+﻿{
   "text.bookpaste.done": "Pasted text across %s %s.",
   "text.bookpaste.partial": "The book is full. %s characters remain in the clipboard. About %s more %s needed.",
   "text.bookpaste.nospace": "There is no space left in this book. About %s more %s needed.",
@@ -30,3 +30,4 @@
   "text.bookpaste.unit.sign.one": "sign",
   "text.bookpaste.unit.sign.other": "signs"
 }
+

@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.ControlsOptionsScreen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
@@ -15,7 +14,7 @@ public final class BookPasteHotkeys {
                     "key.bookpaste.toggle_format_mode",
                     InputUtil.Type.KEYSYM,
                     InputUtil.GLFW_KEY_F8,
-                    KeyBinding.Category.create(Identifier.of("bookpaste", "controls"))
+                    "key.category.bookpaste.controls"
             )
     );
 
@@ -53,11 +52,7 @@ public final class BookPasteHotkeys {
         setToggleFormatModeKey(client, TOGGLE_FORMAT_MODE.getDefaultKey());
     }
 
-    public static ControlsOptionsScreen createControlsScreen(MinecraftClient client, Screen parent) {
-        return new ControlsOptionsScreen(parent, client.options);
-    }
-
     private static boolean shouldIgnoreHotkey(Screen screen) {
-        return screen instanceof BookPasteConfigScreen || screen instanceof ControlsOptionsScreen;
+        return false;
     }
 }

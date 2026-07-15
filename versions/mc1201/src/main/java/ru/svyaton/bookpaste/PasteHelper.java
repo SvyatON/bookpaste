@@ -376,7 +376,20 @@ public final class PasteHelper {
         if (client == null) {
             return "en_us";
         }
-        return client.getLanguageManager().getLanguage();
+        Object language = client.getLanguageManager().getLanguage();
+        if (language instanceof String code) {
+            return code;
+        }
+
+        try {
+            Object code = language.getClass().getMethod("getCode").invoke(language);
+            if (code instanceof String stringCode) {
+                return stringCode;
+            }
+        } catch (ReflectiveOperationException ignored) {
+        }
+
+        return "en_us";
     }
 
     private static String translateCountWord(String noun, int count, String languageCode) {

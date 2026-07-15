@@ -50,7 +50,7 @@ public final class ScribbleCompat {
                 workingPages.add("");
             }
 
-            String currentPageContent = getCurrentPageContent(screen);
+            String currentPageContent = getCurrentPageContent(screen, currentPage);
             if (currentPageContent != null) {
                 workingPages.set(currentPage, currentPageContent);
             }
@@ -89,7 +89,51 @@ public final class ScribbleCompat {
 
             if (changed) {
                 access.bookpaste$setPagesAndCurrentPage(workingPages, lastTouchedPage);
-                setOptionalFieldValue(screen, "scribble$dirty", true);
+
+                boolean updatedNewScribble = false;
+                try {
+                    Object synchronizedPages = getFieldValue(screen, "synchronizedPages");
+                    if (synchronizedPages != null) {
+                        Method populateMethod = findMethod(synchronizedPages.getClass(), "populate", List.class);
+                        populateMethod.setAccessible(true);
+                        populateMethod.invoke(synchronizedPages, workingPages);
+
+                        Class<?> richTextClass = screen.getClass().getClassLoader().loadClass("me.chrr.scribble.book.RichText");
+                        Method fromFormattedString = findMethod(richTextClass, "fromFormattedString", String.class);
+                        fromFormattedString.setAccessible(true);
+                        Object richText = fromFormattedString.invoke(null, workingPages.get(lastTouchedPage));
+
+                        Method setPageTextMethod = findMethod(screen.getClass(), "setPageText", richTextClass);
+                        setPageTextMethod.setAccessible(true);
+                        setPageTextMethod.invoke(screen, richText);
+
+                        try {
+                            Object selectionManager = getFieldValue(screen, "f_98072_");
+                            if (selectionManager == null) {
+                                selectionManager = getFieldValue(screen, "currentPageSelectionManager");
+                            }
+                            if (selectionManager != null) {
+                                try {
+                                    Method m = findMethod(selectionManager.getClass(), "m_95188_");
+                                    m.setAccessible(true);
+                                    m.invoke(selectionManager);
+                                } catch (NoSuchMethodException e) {
+                                    Method m = findMethod(selectionManager.getClass(), "putCursorAtEnd");
+                                    m.setAccessible(true);
+                                    m.invoke(selectionManager);
+                                }
+                            }
+                        } catch (Exception ignored) {
+                        }
+
+                        updatedNewScribble = true;
+                    }
+                } catch (Exception ignored) {
+                }
+
+                if (!updatedNewScribble) {
+                    setOptionalFieldValue(screen, "scribble$dirty", true);
+                }
             }
 
             client.keyboard.setClipboard(remaining);
@@ -110,7 +154,12 @@ public final class ScribbleCompat {
     }
 
     private static boolean isScribbleScreen(Screen screen) {
-        return hasMethod(screen.getClass(), "scribble$history$getRichEditBox");
+        try {
+            findField(screen.getClass(), "synchronizedPages");
+            return true;
+        } catch (NoSuchFieldException e) {
+            return hasMethod(screen.getClass(), "scribble$history$getRichEditBox");
+        }
     }
 
     private static boolean fitsOnPage(String candidate, MinecraftClient client) {
@@ -142,18 +191,31 @@ public final class ScribbleCompat {
         return builder.toString();
     }
 
-    private static String getCurrentPageContent(Object screen) throws ReflectiveOperationException {
-        Object richEditBox = invokeMethodWithReturn(screen, "scribble$history$getRichEditBox");
-        if (richEditBox == null) {
-            return null;
+    private static String getCurrentPageContent(Object screen, int currentPage) throws ReflectiveOperationException {
+        try {
+            Object synchronizedPages = getFieldValue(screen, "synchronizedPages");
+            if (synchronizedPages != null) {
+                Method getMethod = findMethod(synchronizedPages.getClass(), "get", int.class);
+                getMethod.setAccessible(true);
+                Object richText = getMethod.invoke(synchronizedPages, currentPage);
+                if (richText != null) {
+                    return (String) invokeMethodWithReturn(richText, "getAsFormattedString");
+                }
+            }
+        } catch (ReflectiveOperationException ignored) {
         }
 
-        Object richText = invokeMethodWithReturn(richEditBox, "getRichText");
-        if (richText == null) {
-            return null;
+        try {
+            Object richEditBox = invokeMethodWithReturn(screen, "scribble$history$getRichEditBox");
+            if (richEditBox != null) {
+                Object richText = invokeMethodWithReturn(richEditBox, "getRichText");
+                if (richText != null) {
+                    return (String) invokeMethodWithReturn(richText, "getAsFormattedString");
+                }
+            }
+        } catch (ReflectiveOperationException ignored) {
         }
-
-        return (String)invokeMethodWithReturn(richText, "getAsFormattedString");
+        return null;
     }
 
     private static Object getFieldValue(Object target, String name) throws ReflectiveOperationException {

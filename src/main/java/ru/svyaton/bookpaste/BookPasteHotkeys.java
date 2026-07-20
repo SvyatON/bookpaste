@@ -6,7 +6,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
 
 public final class BookPasteHotkeys {
     public static final KeyBinding TOGGLE_FORMAT_MODE = KeyBindingHelper.registerKeyBinding(

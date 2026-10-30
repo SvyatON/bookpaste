@@ -1,12 +1,14 @@
-<img src="src/main/resources/assets/bookpaste/icon.png" align="right" width="190" alt="BookPaste logo">
-
 # BookPaste
+
+<img src="src/main/resources/assets/bookpaste/icon.png" align="right" width="190" alt="BookPaste logo">
 
 Paste long texts into Minecraft books and signs with automatic formatting and page splitting.
 
 **Fabric | Version 2.2 | By SvyatON**
 
 [Download on Modrinth](https://modrinth.com/mod/bookpaste) | [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/bookpaste)
+
+<br clear="right">
 
 ## Features
 

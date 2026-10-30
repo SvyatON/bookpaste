@@ -28,5 +28,19 @@
   "text.bookpaste.unit.line.one": "linha",
   "text.bookpaste.unit.line.other": "linhas",
   "text.bookpaste.unit.sign.one": "placa",
-  "text.bookpaste.unit.sign.other": "placas"
+  "text.bookpaste.unit.sign.other": "placas",
+  "text.bookpaste.limit.changed": "Novo limite: %s páginas. Reduza o livro.",
+  "text.bookpaste.config.pages.button": "Páginas estendidas: %s",
+  "text.bookpaste.config.pages.unlimited": "Ativado",
+  "text.bookpaste.config.pages.vanilla": "Desativado",
+  "text.bookpaste.config.pages.description": "Permite mais de 100 páginas somente quando o servidor confirma o suporte. Funciona no modo individual e em servidores com BookPaste. Sem confirmação, o limite continua sendo 100 páginas. Mantenha o BookPaste instalado para carregar livros não assinados com mais de 100 páginas.",
+  "text.bookpaste.config.max_pages.label": "Limite de páginas:",
+  "text.bookpaste.config.max_pages.description": "100 é o padrão; 0 significa sem limite. As alterações se aplicam ao modo individual.",
+  "text.bookpaste.config.pages.heading": "Configurações de páginas",
+  "text.bookpaste.config.pages.help_local": "Configure aqui o modo individual.",
+  "text.bookpaste.config.pages.help_server": "Ao conectar, são exibidas as opções do servidor.",
+  "text.bookpaste.config.pages.custom_button": "Limite personalizado: %s",
+  "text.bookpaste.config.max_pages.invalid": "Digite um número inteiro de 0 a 2147483647.",
+  "text.bookpaste.config.max_pages.server_label": "Limite do servidor:",
+  "text.bookpaste.config.max_pages.server_description": "Definido pelo servidor. Não é possível alterar aqui. 0 significa sem limite."
 }

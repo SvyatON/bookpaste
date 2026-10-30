@@ -1,4 +1,5 @@
-﻿{
+{
+  "text.bookpaste.limit.changed": "Новий ліміт: %s стор. Скоротіть книгу.",
   "text.bookpaste.done": "Текст вставлено на %s %s.",
   "text.bookpaste.partial": "Книга закінчилася. У буфері залишилося %s символів. Знадобиться ще приблизно %s %s.",
   "text.bookpaste.nospace": "У цій книзі більше немає місця. Знадобиться ще приблизно %s %s.",
@@ -27,5 +28,27 @@
   "text.bookpaste.unit.sign.one": "табличка",
   "text.bookpaste.unit.sign.few": "таблички",
   "text.bookpaste.unit.sign.many": "табличок",
-  "text.bookpaste.unit.sign.other": "таблички"
+  "text.bookpaste.unit.sign.other": "таблички",
+  "text.bookpaste.config.max_pages.label": "Ліміт сторінок:",
+  "text.bookpaste.config.max_pages.description": "100 - звичайний ліміт, 0 - без обмеження. Зміни застосовуються до одиночної гри.",
+  "text.bookpaste.config.pages.heading": "Налаштування кількості сторінок",
+  "text.bookpaste.config.pages.help_local": "Тут - налаштування одиночної гри.",
+  "text.bookpaste.config.pages.help_server": "На сервері показано його налаштування.",
+  "text.bookpaste.config.pages.custom_button": "Власний ліміт сторінок: %s",
+  "text.bookpaste.config.max_pages.invalid": "Введіть ціле число від 0 до 2147483647.",
+  "text.bookpaste.config.max_pages.server_label": "Ліміт сервера:",
+  "text.bookpaste.config.max_pages.server_description": "Задається сервером. Тут змінити не можна. 0 - без обмеження.",
+  "text.bookpaste.config.hotkey.label": "Клавіша швидкого перемикання",
+  "text.bookpaste.config.hotkey.button": "Клавіша: %s",
+  "text.bookpaste.config.hotkey.listening": "Натисніть клавішу або кнопку миші...",
+  "text.bookpaste.config.hotkey.reset": "Скинути клавішу",
+  "text.bookpaste.config.hotkey.controls": "Відкрити керування",
+  "text.bookpaste.mode.changed": "BookPaste: режим вставлення: %s",
+  "key.bookpaste.toggle_format_mode": "Перемкнути режим вставлення",
+  "key.category.bookpaste.controls": "BookPaste",
+  "category.bookpaste.controls": "BookPaste",
+  "text.bookpaste.config.pages.button": "Розширені сторінки: %s",
+  "text.bookpaste.config.pages.unlimited": "Увімкнено",
+  "text.bookpaste.config.pages.vanilla": "Вимкнено",
+  "text.bookpaste.config.pages.description": "Понад 100 сторінок доступні лише за підтвердженням сервера. Підтримується одиночна гра та сервери з BookPaste. Без підтвердження залишається 100 сторінок. Для завантаження непідписаних книг із понад 100 сторінками потрібен BookPaste."
 }

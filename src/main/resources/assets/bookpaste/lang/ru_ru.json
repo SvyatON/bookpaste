@@ -1,4 +1,5 @@
-﻿{
+{
+  "text.bookpaste.limit.changed": "Новый лимит: %s стр. Сократите книгу.",
   "text.bookpaste.done": "Текст вставлен на %s %s.",
   "text.bookpaste.partial": "Книга закончилась. В буфере осталось %s символов. Понадобится еще примерно %s %s.",
   "text.bookpaste.nospace": "В этой книге больше нет места. Понадобится еще примерно %s %s.",
@@ -36,5 +37,18 @@
   "text.bookpaste.unit.sign.one": "табличка",
   "text.bookpaste.unit.sign.few": "таблички",
   "text.bookpaste.unit.sign.many": "табличек",
-  "text.bookpaste.unit.sign.other": "таблички"
+  "text.bookpaste.unit.sign.other": "таблички",
+  "text.bookpaste.config.pages.button": "Расширенные страницы: %s",
+  "text.bookpaste.config.pages.unlimited": "Вкл",
+  "text.bookpaste.config.pages.vanilla": "Выкл",
+  "text.bookpaste.config.pages.description": "Больше 100 страниц доступны только при подтверждении сервера. Поддерживается одиночная игра и серверы с BookPaste. Без подтверждения остаётся 100 страниц. Для загрузки неподписанных книг больше 100 страниц нужен BookPaste.",
+  "text.bookpaste.config.max_pages.label": "Лимит страниц:",
+  "text.bookpaste.config.max_pages.description": "100 - обычный лимит, 0 - без ограничения. Изменения применяются к одиночной игре.",
+  "text.bookpaste.config.pages.heading": "Настройки количества страниц",
+  "text.bookpaste.config.pages.help_local": "Здесь - настройки одиночной игры.",
+  "text.bookpaste.config.pages.help_server": "На сервере показаны его настройки.",
+  "text.bookpaste.config.pages.custom_button": "Свой лимит страниц: %s",
+  "text.bookpaste.config.max_pages.invalid": "Введите целое число от 0 до 2147483647.",
+  "text.bookpaste.config.max_pages.server_label": "Лимит сервера:",
+  "text.bookpaste.config.max_pages.server_description": "Задаётся сервером. Здесь изменить нельзя. 0 - без ограничения."
 }

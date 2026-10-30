@@ -1,6 +1,9 @@
 package ru.svyaton.bookpaste;
-
+//? if >=26.1 {
+/*import net.minecraft.client.Minecraft;*/
+//?} else {
 import net.minecraft.client.MinecraftClient;
+//?}
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -13,12 +16,25 @@ public final class SignPasteCompat {
     }
 
     public static boolean handlePaste(Object screen) {
+        //? if >=26.1 {
+        /*Minecraft client = Minecraft.getInstance();*/
+        //?} else {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client == null || client.keyboard == null) {
+        //?}
+        if (client == null) {
             return false;
         }
-
+        //? if >=26.1 {
+        /*if (client.keyboardHandler == null) {
+            return false;
+        }
+        String clipboard = client.keyboardHandler.getClipboard();*/
+        //?} else {
+        if (client.keyboard == null) {
+            return false;
+        }
         String clipboard = client.keyboard.getClipboard();
+        //?}
         if (clipboard == null || clipboard.trim().isEmpty()) {
             return false;
         }
@@ -42,9 +58,15 @@ public final class SignPasteCompat {
             for (int row = startRow; row < SIGN_LINE_COUNT && row < messages.length && !remaining.isEmpty(); row++) {
                 String before = remaining;
                 String base = messages[row] == null ? "" : messages[row];
+                //? if >=26.1 {
+                /*PasteHelper.PageSlice slice = PasteHelper.buildSignLine(base, remaining,
+                        candidate -> client.font.width(candidate) <= SIGN_LINE_WIDTH,
+                        row == SIGN_LINE_COUNT - 1);*/
+                //?} else {
                 PasteHelper.PageSlice slice = PasteHelper.buildSignLine(base, remaining,
                         candidate -> client.textRenderer.getWidth(candidate) <= SIGN_LINE_WIDTH,
                         row == SIGN_LINE_COUNT - 1);
+                //?}
 
                 if (!slice.pageText().equals(base)) {
                     rowField.setInt(screen, row);
@@ -65,12 +87,21 @@ public final class SignPasteCompat {
 
             rowField.setInt(screen, lastRow);
             if (!remaining.isEmpty()) {
+                //? if >=26.1 {
+                /*client.keyboardHandler.setClipboard(remaining);*/
+                //?} else {
                 client.keyboard.setClipboard(remaining);
+                //?}
             }
 
             if (client.player != null) {
-                client.player.sendMessage(PasteHelper.createSignStatusMessage(linesUsed, remaining,
-                        candidate -> client.textRenderer.getWidth(candidate) <= SIGN_LINE_WIDTH), true);
+                //? if >=26.1 {
+                /*BookPasteMessages.show(client, PasteHelper.createSignStatusMessage(linesUsed, remaining,
+                        candidate -> client.font.width(candidate) <= SIGN_LINE_WIDTH));*/
+                //?} else {
+                BookPasteMessages.show(client, PasteHelper.createSignStatusMessage(linesUsed, remaining,
+                        candidate -> client.textRenderer.getWidth(candidate) <= SIGN_LINE_WIDTH));
+                //?}
             }
             return true;
         } catch (ReflectiveOperationException | ClassCastException ex) {

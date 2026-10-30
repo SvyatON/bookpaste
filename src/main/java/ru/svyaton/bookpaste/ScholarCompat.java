@@ -5,10 +5,24 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.function.Predicate;
-
+//? if >=26.1 {
+/*import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;*/
+//?}
+//? if >=1.19 {
+//? if <26.1 {
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+//?}
+//?}
+//? if <1.19 {
+/*import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;*/
+//?}
 
 public final class ScholarCompat {
     private static final String SCHOLAR_SCREEN = "io.github.mortuusars.scholar.client.gui.screen.edit.SpreadBookEditScreen";
@@ -19,19 +33,23 @@ public final class ScholarCompat {
     private ScholarCompat() {
     }
 
-    public static boolean handlePaste() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (!(client.currentScreen instanceof Screen)) {
+    public static int pageLimit(Object screen, int original) {
+        return isScholarScreen(screen.getClass()) ? BookPasteBookLimits.pageLimit() : original;
+    }
+    //? if >=26.2 {
+    /*public static boolean handlePaste() {
+        Minecraft client = Minecraft.getInstance();
+        if (!(client.gui.screen() instanceof Screen)) {
             return false;
         }
 
-        Screen screen = (Screen)client.currentScreen;
+        Screen screen = (Screen)client.gui.screen();
         if (!isScholarScreen(screen.getClass())) {
             return false;
         }
 
-        String clipboard = client.keyboard.getClipboard();
-        if (clipboard == null || clipboard.isBlank()) {
+        String clipboard = client.keyboardHandler.getClipboard();
+        if (clipboard == null || clipboard.trim().isEmpty()) {
             return false;
         }
 
@@ -50,7 +68,7 @@ public final class ScholarCompat {
             }
 
             @SuppressWarnings("unchecked")
-            List<String> pages = (List<String>)getFieldValue(screen, "pages");
+            List<String> pages = new java.util.ArrayList<>((List<String>)getFieldValue(screen, "pages"));
             int currentSpread = (int)getFieldValue(screen, "currentSpread");
             int startPageIndex = currentSpread * 2 + sideOffset;
 
@@ -63,15 +81,24 @@ public final class ScholarCompat {
             boolean changed = false;
             int lastTouchedPage = startPageIndex;
 
-            for (int pageIndex = startPageIndex; pageIndex < 100; pageIndex++) {
+            int pageLimit = BookPasteBookLimits.pageLimit();
+            for (int pageIndex = startPageIndex; pageIndex < pageLimit; pageIndex++) {
                 while (pages.size() <= pageIndex) {
                     pages.add("");
                 }
 
                 String base = pages.get(pageIndex);
                 PasteHelper.PageSlice slice = PasteHelper.buildPage(base, remaining, candidate -> fitsOnPage(candidate, client),
-                        pageIndex == 99);
-                boolean consumed = !slice.remainingText().equals(remaining);
+                        pageIndex == pageLimit - 1);
+                String nextRemaining = slice.remainingText();
+                boolean consumed = !nextRemaining.equals(remaining);
+                if (consumed && !nextRemaining.isEmpty()) {
+                    nextRemaining = PasteHelper.continueFormatting(slice.pageText(), nextRemaining);
+                    consumed = !nextRemaining.equals(remaining);
+                }
+                if (!consumed && base.isEmpty()) {
+                    break;
+                }
 
                 if (!slice.pageText().equals(base)) {
                     pages.set(pageIndex, slice.pageText());
@@ -83,7 +110,265 @@ public final class ScholarCompat {
                     lastTouchedPage = pageIndex;
                 }
 
-                remaining = slice.remainingText();
+                remaining = nextRemaining;
+                if (remaining.isEmpty()) {
+                    break;
+                }
+            }
+
+            if (!changed) {
+                client.keyboardHandler.setClipboard(remaining);
+                sendStatus(client, pagesUsed, remaining);
+                return true;
+            }
+
+            ScholarPageAccess.replacePages(screen, pages, lastTouchedPage / 2);
+
+            client.keyboardHandler.setClipboard(remaining);
+            sendStatus(client, pagesUsed, remaining);
+            return true;
+        } catch (ReflectiveOperationException | RuntimeException exception) {
+            java.util.logging.Logger.getLogger("BookPaste").log(java.util.logging.Level.WARNING, "Could not paste into Scholar", exception);
+            return false;
+        }
+    }
+
+    private static void sendStatus(Minecraft client, int pagesUsed, String remaining) {
+        if (client.player == null) {
+            return;
+        }
+
+        BookPasteMessages.show(client, PasteHelper.createStatusMessage(pagesUsed, remaining,
+                candidate -> fitsOnPage(candidate, client)));
+    }
+
+    private static boolean fitsOnPage(String candidate, Minecraft client) {
+        if (candidate.length() > 1024) {
+            return false;
+        }
+
+        try {
+            Class<?> validator = Class.forName(SCHOLAR_VALIDATOR);
+            for (Method method : validator.getDeclaredMethods()) {
+                if (method.getName().equals("fitInDimensions") && Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 3) {
+                    method.setAccessible(true);
+                    @SuppressWarnings("unchecked")
+                    Predicate<String> predicate = (Predicate<String>)method.invoke(null, client.font, PAGE_WIDTH, PAGE_HEIGHT);
+                    return predicate.test(candidate);
+                }
+            }
+        } catch (ReflectiveOperationException ignored) {
+        }
+
+        int lineCount = client.font.split(Component.literal(candidate), PAGE_WIDTH).size();
+        return lineCount * client.font.lineHeight <= PAGE_HEIGHT;
+    }*/
+    //?}
+    //? if >=26.1 {
+//? if <26.2 {
+    /*public static boolean handlePaste() {
+        Minecraft client = Minecraft.getInstance();
+        if (!(client.screen instanceof Screen)) {
+            return false;
+        }
+
+        Screen screen = (Screen)client.screen;
+        if (!isScholarScreen(screen.getClass())) {
+            return false;
+        }
+
+        String clipboard = client.keyboardHandler.getClipboard();
+        if (clipboard == null || clipboard.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            Object focused = screen.getFocused();
+            Object leftTextBox = getFieldValue(screen, "leftPageTextBox");
+            Object rightTextBox = getFieldValue(screen, "rightPageTextBox");
+
+            int sideOffset;
+            if (focused == rightTextBox) {
+                sideOffset = 1;
+            } else if (focused == leftTextBox) {
+                sideOffset = 0;
+            } else {
+                return false;
+            }
+
+            @SuppressWarnings("unchecked")
+            List<String> pages = new java.util.ArrayList<>((List<String>)getFieldValue(screen, "pages"));
+            int currentSpread = (int)getFieldValue(screen, "currentSpread");
+            int startPageIndex = currentSpread * 2 + sideOffset;
+
+            while (pages.size() <= startPageIndex) {
+                pages.add("");
+            }
+
+            String remaining = PasteHelper.normalizeClipboard(clipboard);
+            int pagesUsed = 0;
+            boolean changed = false;
+            int lastTouchedPage = startPageIndex;
+
+            int pageLimit = BookPasteBookLimits.pageLimit();
+            for (int pageIndex = startPageIndex; pageIndex < pageLimit; pageIndex++) {
+                while (pages.size() <= pageIndex) {
+                    pages.add("");
+                }
+
+                String base = pages.get(pageIndex);
+                PasteHelper.PageSlice slice = PasteHelper.buildPage(base, remaining, candidate -> fitsOnPage(candidate, client),
+                        pageIndex == pageLimit - 1);
+                String nextRemaining = slice.remainingText();
+                boolean consumed = !nextRemaining.equals(remaining);
+                if (consumed && !nextRemaining.isEmpty()) {
+                    nextRemaining = PasteHelper.continueFormatting(slice.pageText(), nextRemaining);
+                    consumed = !nextRemaining.equals(remaining);
+                }
+                if (!consumed && base.isEmpty()) {
+                    break;
+                }
+
+                if (!slice.pageText().equals(base)) {
+                    pages.set(pageIndex, slice.pageText());
+                    changed = true;
+                }
+
+                if (consumed) {
+                    pagesUsed++;
+                    lastTouchedPage = pageIndex;
+                }
+
+                remaining = nextRemaining;
+                if (remaining.isEmpty()) {
+                    break;
+                }
+            }
+
+            if (!changed) {
+                client.keyboardHandler.setClipboard(remaining);
+                sendStatus(client, pagesUsed, remaining);
+                return true;
+            }
+
+            ScholarPageAccess.replacePages(screen, pages, lastTouchedPage / 2);
+
+            client.keyboardHandler.setClipboard(remaining);
+            sendStatus(client, pagesUsed, remaining);
+            return true;
+        } catch (ReflectiveOperationException | RuntimeException exception) {
+            java.util.logging.Logger.getLogger("BookPaste").log(java.util.logging.Level.WARNING, "Could not paste into Scholar", exception);
+            return false;
+        }
+    }
+
+    private static void sendStatus(Minecraft client, int pagesUsed, String remaining) {
+        if (client.player == null) {
+            return;
+        }
+
+        BookPasteMessages.show(client, PasteHelper.createStatusMessage(pagesUsed, remaining,
+                candidate -> fitsOnPage(candidate, client)));
+    }
+
+    private static boolean fitsOnPage(String candidate, Minecraft client) {
+        if (candidate.length() > 1024) {
+            return false;
+        }
+
+        try {
+            Class<?> validator = Class.forName(SCHOLAR_VALIDATOR);
+            for (Method method : validator.getDeclaredMethods()) {
+                if (method.getName().equals("fitInDimensions") && Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 3) {
+                    method.setAccessible(true);
+                    @SuppressWarnings("unchecked")
+                    Predicate<String> predicate = (Predicate<String>)method.invoke(null, client.font, PAGE_WIDTH, PAGE_HEIGHT);
+                    return predicate.test(candidate);
+                }
+            }
+        } catch (ReflectiveOperationException ignored) {
+        }
+
+        int lineCount = client.font.split(Component.literal(candidate), PAGE_WIDTH).size();
+        return lineCount * client.font.lineHeight <= PAGE_HEIGHT;
+    }*/
+    //?}
+    //?}
+    //? if <26.1 {
+    public static boolean handlePaste() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (!(client.currentScreen instanceof Screen)) {
+            return false;
+        }
+
+        Screen screen = (Screen)client.currentScreen;
+        if (!isScholarScreen(screen.getClass())) {
+            return false;
+        }
+
+        String clipboard = client.keyboard.getClipboard();
+        if (clipboard == null || clipboard.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            Object focused = screen.getFocused();
+            Object leftTextBox = getFieldValue(screen, "leftPageTextBox");
+            Object rightTextBox = getFieldValue(screen, "rightPageTextBox");
+
+            int sideOffset;
+            if (focused == rightTextBox) {
+                sideOffset = 1;
+            } else if (focused == leftTextBox) {
+                sideOffset = 0;
+            } else {
+                return false;
+            }
+
+            @SuppressWarnings("unchecked")
+            List<String> pages = new java.util.ArrayList<>((List<String>)getFieldValue(screen, "pages"));
+            int currentSpread = (int)getFieldValue(screen, "currentSpread");
+            int startPageIndex = currentSpread * 2 + sideOffset;
+
+            while (pages.size() <= startPageIndex) {
+                pages.add("");
+            }
+
+            String remaining = PasteHelper.normalizeClipboard(clipboard);
+            int pagesUsed = 0;
+            boolean changed = false;
+            int lastTouchedPage = startPageIndex;
+
+            int pageLimit = BookPasteBookLimits.pageLimit();
+            for (int pageIndex = startPageIndex; pageIndex < pageLimit; pageIndex++) {
+                while (pages.size() <= pageIndex) {
+                    pages.add("");
+                }
+
+                String base = pages.get(pageIndex);
+                PasteHelper.PageSlice slice = PasteHelper.buildPage(base, remaining, candidate -> fitsOnPage(candidate, client),
+                        pageIndex == pageLimit - 1);
+                String nextRemaining = slice.remainingText();
+                boolean consumed = !nextRemaining.equals(remaining);
+                if (consumed && !nextRemaining.isEmpty()) {
+                    nextRemaining = PasteHelper.continueFormatting(slice.pageText(), nextRemaining);
+                    consumed = !nextRemaining.equals(remaining);
+                }
+                if (!consumed && base.isEmpty()) {
+                    break;
+                }
+
+                if (!slice.pageText().equals(base)) {
+                    pages.set(pageIndex, slice.pageText());
+                    changed = true;
+                }
+
+                if (consumed) {
+                    pagesUsed++;
+                    lastTouchedPage = pageIndex;
+                }
+
+                remaining = nextRemaining;
                 if (remaining.isEmpty()) {
                     break;
                 }
@@ -95,14 +380,13 @@ public final class ScholarCompat {
                 return true;
             }
 
-            setFieldValue(screen, "currentSpread", lastTouchedPage / 2);
-            setFieldValue(screen, "bookModified", true);
-            invokeMethod(screen, "setTextBoxes", false);
+            ScholarPageAccess.replacePages(screen, pages, lastTouchedPage / 2);
 
             client.keyboard.setClipboard(remaining);
             sendStatus(client, pagesUsed, remaining);
             return true;
-        } catch (ReflectiveOperationException | ClassCastException exception) {
+        } catch (ReflectiveOperationException | RuntimeException exception) {
+            java.util.logging.Logger.getLogger("BookPaste").log(java.util.logging.Level.WARNING, "Could not paste into Scholar", exception);
             return false;
         }
     }
@@ -112,21 +396,12 @@ public final class ScholarCompat {
             return;
         }
 
-        client.player.sendMessage(PasteHelper.createStatusMessage(pagesUsed, remaining,
-                candidate -> fitsOnPage(candidate, client)), true);
+        BookPasteMessages.show(client, PasteHelper.createStatusMessage(pagesUsed, remaining,
+                candidate -> fitsOnPage(candidate, client)));
     }
 
-    private static boolean isScholarScreen(Class<?> type) {
-        Class<?> current = type;
-        while (current != null) {
-            if (SCHOLAR_SCREEN.equals(current.getName())) {
-                return true;
-            }
-            current = current.getSuperclass();
-        }
-        return false;
-    }
-
+    //? if >=1.19 {
+    //? if <26.1 {
     private static boolean fitsOnPage(String candidate, MinecraftClient client) {
         if (candidate.length() > 1024) {
             return false;
@@ -143,11 +418,47 @@ public final class ScholarCompat {
                 }
             }
         } catch (ReflectiveOperationException ignored) {
-            // Fall back to vanilla-style line wrapping if Scholar internals are unavailable.
         }
 
         int lineCount = client.textRenderer.wrapLines(Text.literal(candidate), PAGE_WIDTH).size();
         return lineCount * client.textRenderer.fontHeight <= PAGE_HEIGHT;
+    }
+    //?}
+    //?}
+    //? if <1.19 {
+    /*private static boolean fitsOnPage(String candidate, MinecraftClient client) {
+        if (candidate.length() > 1024) {
+            return false;
+        }
+
+        try {
+            Class<?> validator = Class.forName(SCHOLAR_VALIDATOR);
+            for (Method method : validator.getDeclaredMethods()) {
+                if (method.getName().equals("fitInDimensions") && Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 3) {
+                    method.setAccessible(true);
+                    @SuppressWarnings("unchecked")
+                    Predicate<String> predicate = (Predicate<String>)method.invoke(null, client.textRenderer, PAGE_WIDTH, PAGE_HEIGHT);
+                    return predicate.test(candidate);
+                }
+            }
+        } catch (ReflectiveOperationException ignored) {
+        }
+
+        int lineCount = client.textRenderer.wrapLines(new LiteralText(candidate), PAGE_WIDTH).size();
+        return lineCount * client.textRenderer.fontHeight <= PAGE_HEIGHT;
+    }    */
+    //?}
+    //?}
+
+    private static boolean isScholarScreen(Class<?> type) {
+        Class<?> current = type;
+        while (current != null) {
+            if (SCHOLAR_SCREEN.equals(current.getName())) {
+                return true;
+            }
+            current = current.getSuperclass();
+        }
+        return false;
     }
 
     private static Object getFieldValue(Object target, String name) throws ReflectiveOperationException {

@@ -7,6 +7,7 @@ public final class BookPasteClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BookPasteConfigManager.load();
+        BookPasteNetworkingClient.initialize();
         BookPasteHotkeys.initialize();
         ClientTickEvents.END_CLIENT_TICK.register(ScribbleCompat::tick);
     }

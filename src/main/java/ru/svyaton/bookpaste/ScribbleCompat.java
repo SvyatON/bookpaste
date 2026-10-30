@@ -5,9 +5,28 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+//? if >=26.1 {
+/*import net.minecraft.client.Minecraft;*/
+//?} else {
 import net.minecraft.client.MinecraftClient;
+//?}
+//? if >=26.1 {
+/*import net.minecraft.client.gui.screens.Screen;*/
+//?} else {
 import net.minecraft.client.gui.screen.Screen;
+//?}
+//? if >=26.1 {
+/*import net.minecraft.network.chat.Component;*/
+//?}
+//? if >=1.19 {
+//? if <26.1 {
 import net.minecraft.text.Text;
+//?}
+//?}
+//? if <1.19 {
+/*import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;*/
+//?}
 
 public final class ScribbleCompat {
     private static final int PAGE_WIDTH = 114;
@@ -17,7 +36,11 @@ public final class ScribbleCompat {
     private ScribbleCompat() {
     }
 
+    //? if >=26.1 {
+    /*public static void tick(Minecraft client) {*/
+    //?} else {
     public static void tick(MinecraftClient client) {
+    //?}
         boolean pasteShortcutDown = BookPasteInputUtil.isPasteShortcutPressed(client);
         if (pasteShortcutDown && !pasteShortcutWasDown) {
             handlePaste();
@@ -26,31 +49,70 @@ public final class ScribbleCompat {
     }
 
     public static boolean handlePaste() {
+        //? if >=26.1 {
+        /*Minecraft client = Minecraft.getInstance();*/
+        //?} else {
         MinecraftClient client = MinecraftClient.getInstance();
+        //?}
+        //? if >=26.2 {
+        /*if (!(client.gui.screen() instanceof Screen)) {*/
+        //?}
+        //? if >=26.1 {
+//? if <26.2 {
+        /*if (!(client.screen instanceof Screen)) {*/
+        //?}
+        //?}
+        //? if <26.1 {
         if (!(client.currentScreen instanceof Screen)) {
+        //?}
             return false;
         }
 
+        //? if >=26.2 {
+        /*Screen screen = (Screen)client.gui.screen();*/
+        //?}
+        //? if >=26.1 {
+//? if <26.2 {
+        /*Screen screen = (Screen)client.screen;*/
+        //?}
+        //?}
+        //? if <26.1 {
         Screen screen = (Screen)client.currentScreen;
-        if (!(screen instanceof BookPasteBookEditAccess) || !isScribbleScreen(screen)) {
-            return false;
-        }
+        //?}
 
-        BookPasteBookEditAccess access = (BookPasteBookEditAccess)screen;
-
+        //? if >=26.1 {
+        /*String clipboard = client.keyboardHandler.getClipboard();*/
+        //?} else {
         String clipboard = client.keyboard.getClipboard();
-        if (clipboard == null || clipboard.isBlank()) {
+        //?}
+        if (clipboard == null || clipboard.trim().isEmpty()) {
             return false;
         }
 
         try {
-            List<String> workingPages = new ArrayList<>(access.bookpaste$getPages());
-            int currentPage = access.bookpaste$getCurrentPage();
+            BookPasteBookEditAccess access = (screen instanceof BookPasteBookEditAccess) ? (BookPasteBookEditAccess) screen : null;
+            boolean isScribble = isScribbleScreen(screen);
+            if (!isScribble) {
+                return false;
+            }
+
+            List<String> workingPages;
+            int currentPage;
+
+            if (access != null) {
+                List<String> cachedPages = ScribblePageAccess.readLegacyCache(screen, access.bookpaste$getPages().size());
+                workingPages = cachedPages != null ? cachedPages : new ArrayList<>(access.bookpaste$getPages());
+                currentPage = access.bookpaste$getCurrentPage();
+            } else {
+                workingPages = getScribblePages(screen);
+                currentPage = ScribblePageAccess.focusedPage(screen);
+            }
+
             while (workingPages.size() <= currentPage) {
                 workingPages.add("");
             }
 
-            String currentPageContent = getCurrentPageContent(screen);
+            String currentPageContent = getCurrentPageContent(screen, currentPage);
             if (currentPageContent != null) {
                 workingPages.set(currentPage, currentPageContent);
             }
@@ -60,7 +122,8 @@ public final class ScribbleCompat {
             boolean changed = false;
             int lastTouchedPage = currentPage;
 
-            for (int pageIndex = currentPage; pageIndex < 100; pageIndex++) {
+            int pageLimit = BookPasteBookLimits.pageLimit();
+            for (int pageIndex = currentPage; pageIndex < pageLimit; pageIndex++) {
                 while (workingPages.size() <= pageIndex) {
                     workingPages.add("");
                 }
@@ -68,8 +131,16 @@ public final class ScribbleCompat {
                 String base = workingPages.get(pageIndex);
                 PasteHelper.PageSlice slice = PasteHelper.buildPage(base, remaining,
                         candidate -> fitsOnPage(candidate, client),
-                        pageIndex == 99);
-                boolean consumed = !slice.remainingText().equals(remaining);
+                        pageIndex == pageLimit - 1);
+                String nextRemaining = slice.remainingText();
+                boolean consumed = !nextRemaining.equals(remaining);
+                if (consumed && !nextRemaining.isEmpty()) {
+                    nextRemaining = ScribblePageAccess.continueFormatting(slice.pageText(), nextRemaining);
+                    consumed = !nextRemaining.equals(remaining);
+                }
+                if (!consumed && base.isEmpty()) {
+                    break;
+                }
 
                 if (!slice.pageText().equals(base)) {
                     workingPages.set(pageIndex, slice.pageText());
@@ -81,39 +152,99 @@ public final class ScribbleCompat {
                     lastTouchedPage = pageIndex;
                 }
 
-                remaining = slice.remainingText();
+                remaining = nextRemaining;
                 if (remaining.isEmpty()) {
                     break;
                 }
             }
 
             if (changed) {
-                access.bookpaste$setPagesAndCurrentPage(workingPages, lastTouchedPage);
-                setOptionalFieldValue(screen, "scribble$dirty", true);
+                if (access != null) {
+                    List<String> originalPages = new ArrayList<>(access.bookpaste$getPages());
+                    int originalPage = access.bookpaste$getCurrentPage();
+                    ScribblePageAccess.LegacyReplacement replacement = ScribblePageAccess.stageLegacy(screen, workingPages, originalPages);
+                    try {
+                        replacement.commit();
+                        setOptionalFieldValue(screen, "scribble$dirty", true);
+                        access.bookpaste$setPagesAndCurrentPage(workingPages, lastTouchedPage);
+                        if (hasMethod(screen.getClass(), "scribble$history$switchPage", int.class)) {
+                            Method switchPage = findMethod(screen.getClass(), "scribble$history$switchPage", int.class);
+                            switchPage.setAccessible(true);
+                            switchPage.invoke(screen, lastTouchedPage);
+                        }
+                    } catch (ReflectiveOperationException | RuntimeException exception) {
+                        try {
+                            replacement.rollback();
+                            access.bookpaste$setPagesAndCurrentPage(originalPages, originalPage);
+                        } catch (ReflectiveOperationException | RuntimeException restoreFailure) {
+                            exception.addSuppressed(restoreFailure);
+                        }
+                        throw exception;
+                    }
+                } else {
+                    ScribblePageAccess.replacePages(screen, workingPages, lastTouchedPage);
+                }
             }
 
+            //? if >=26.1 {
+            /*client.keyboardHandler.setClipboard(remaining);*/
+            //?} else {
             client.keyboard.setClipboard(remaining);
-            sendStatus(access, client, pagesUsed, remaining);
+            //?}
+            sendStatus(client, pagesUsed, remaining);
+            pasteShortcutWasDown = true;
             return true;
-        } catch (ReflectiveOperationException | ClassCastException exception) {
+        } catch (ReflectiveOperationException | RuntimeException exception) {
+            java.util.logging.Logger.getLogger("BookPaste").log(java.util.logging.Level.WARNING, "Could not paste into Scribble", exception);
             return false;
         }
     }
 
-    private static void sendStatus(BookPasteBookEditAccess access, MinecraftClient client, int pagesUsed, String remaining) {
-        if (access.bookpaste$getPlayer() == null) {
+    private static List<String> getScribblePages(Screen screen) throws ReflectiveOperationException {
+        return ScribblePageAccess.readPages(screen);
+    }
+
+    //? if >=26.1 {
+    /*private static void sendStatus(Minecraft client, int pagesUsed, String remaining) {*/
+    //?} else {
+    private static void sendStatus(MinecraftClient client, int pagesUsed, String remaining) {
+    //?}
+        if (client.player == null) {
             return;
         }
-
-        access.bookpaste$getPlayer().sendMessage(PasteHelper.createStatusMessage(pagesUsed, remaining,
-                candidate -> fitsOnPage(candidate, client)), true);
+        BookPasteMessages.show(client, PasteHelper.createStatusMessage(pagesUsed, remaining,
+                candidate -> fitsOnPage(candidate, client)));
     }
 
     private static boolean isScribbleScreen(Screen screen) {
-        return hasMethod(screen.getClass(), "scribble$history$getRichEditBox");
+        if (screen.getClass().getName().contains("ScribbleBookEditScreen")) {
+            return true;
+        }
+        try {
+            findField(screen.getClass(), "pages");
+            if (screen.getClass().getName().contains("me.chrr.scribble")) {
+                return true;
+            }
+        } catch (NoSuchFieldException ignored) {
+        }
+        try {
+            findField(screen.getClass(), "richPages");
+            if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("scribble")) return true;
+        } catch (NoSuchFieldException ignored) {
+        }
+        try {
+            findField(screen.getClass(), "synchronizedPages");
+            return true;
+        } catch (NoSuchFieldException e) {
+            return hasMethod(screen.getClass(), "scribble$history$getRichEditBox");
+        }
     }
 
+    //? if >=26.1 {
+    /*private static boolean fitsOnPage(String candidate, Minecraft client) {*/
+    //?} else {
     private static boolean fitsOnPage(String candidate, MinecraftClient client) {
+    //?}
         if (candidate.length() > 1024) {
             return false;
         }
@@ -123,8 +254,33 @@ public final class ScribbleCompat {
         }
 
         String visibleText = stripFormattingCodes(candidate);
-        int lineCount = client.textRenderer.wrapLines(Text.literal(visibleText), PAGE_WIDTH).size();
-        return lineCount * client.textRenderer.fontHeight <= PAGE_HEIGHT;
+        Object formatted = candidate.indexOf('\u00a7') >= 0 ? ScribblePageAccess.parseFormattedText(candidate) : null;
+        //? if >=26.1 {
+        /*net.minecraft.network.chat.FormattedText text = formatted instanceof net.minecraft.network.chat.FormattedText
+                ? (net.minecraft.network.chat.FormattedText) formatted : Component.literal(visibleText);
+        int lineCount = client.font.split(text, PAGE_WIDTH).size();
+        return lineCount * client.font.lineHeight <= PAGE_HEIGHT;*/
+    //?}
+    //? if >=1.19 {
+    //? if <26.1 {
+    net.minecraft.text.StringVisitable text = formatted instanceof net.minecraft.text.StringVisitable
+            ? (net.minecraft.text.StringVisitable) formatted : Text.literal(visibleText);
+    int lineCount = client.textRenderer.wrapLines(text, PAGE_WIDTH).size();
+    return lineCount * client.textRenderer.fontHeight <= PAGE_HEIGHT;
+    //?}
+    //?}
+    //? if >=1.16.5 && <1.19 {
+    /*net.minecraft.text.StringVisitable text = formatted instanceof net.minecraft.text.StringVisitable
+            ? (net.minecraft.text.StringVisitable) formatted : new LiteralText(visibleText);
+    int lineCount = client.textRenderer.wrapLines(text, PAGE_WIDTH).size();
+    return lineCount * client.textRenderer.fontHeight <= PAGE_HEIGHT;*/
+    //?}
+    //? if <1.16.5 {
+    /*net.minecraft.text.StringRenderable text = formatted instanceof net.minecraft.text.StringRenderable
+            ? (net.minecraft.text.StringRenderable) formatted : new LiteralText(visibleText);
+    int lineCount = client.textRenderer.wrapLines(text, PAGE_WIDTH).size();
+    return lineCount * client.textRenderer.fontHeight <= PAGE_HEIGHT;*/
+    //?}
     }
 
     private static String stripFormattingCodes(String text) {
@@ -142,24 +298,23 @@ public final class ScribbleCompat {
         return builder.toString();
     }
 
-    private static String getCurrentPageContent(Object screen) throws ReflectiveOperationException {
-        Object richEditBox = invokeMethodWithReturn(screen, "scribble$history$getRichEditBox");
-        if (richEditBox == null) {
-            return null;
+    private static String getCurrentPageContent(Object screen, int currentPage) throws ReflectiveOperationException {
+        if (hasMethod(screen.getClass(), "scribble$history$getRichEditBox")) {
+            Object editBox = invokeMethodWithReturn(screen, "scribble$history$getRichEditBox");
+            if (editBox != null) {
+                return ScribblePageAccess.formattedText(invokeMethodWithReturn(editBox, "getRichText"));
+            }
         }
-
-        Object richText = invokeMethodWithReturn(richEditBox, "getRichText");
-        if (richText == null) {
-            return null;
+        if (screen instanceof BookPasteBookEditAccess) {
+            List<String> cached = ScribblePageAccess.readLegacyCache(screen,
+                    ((BookPasteBookEditAccess) screen).bookpaste$getPages().size());
+            if (cached != null && currentPage < cached.size()) return cached.get(currentPage);
         }
-
-        return (String)invokeMethodWithReturn(richText, "getAsFormattedString");
-    }
-
-    private static Object getFieldValue(Object target, String name) throws ReflectiveOperationException {
-        Field field = findField(target.getClass(), name);
-        field.setAccessible(true);
-        return field.get(target);
+        if (screen.getClass().getName().contains("ScribbleBookEditScreen")) {
+            List<String> pages = ScribblePageAccess.readPages(screen);
+            if (currentPage < pages.size()) return pages.get(currentPage);
+        }
+        return null;
     }
 
     private static void setFieldValue(Object target, String name, Object value) throws ReflectiveOperationException {

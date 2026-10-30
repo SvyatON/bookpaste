@@ -28,5 +28,19 @@
   "text.bookpaste.unit.line.one": "行",
   "text.bookpaste.unit.line.other": "行",
   "text.bookpaste.unit.sign.one": "个告示牌",
-  "text.bookpaste.unit.sign.other": "个告示牌"
+  "text.bookpaste.unit.sign.other": "个告示牌",
+  "text.bookpaste.limit.changed": "新上限为%s页，请减少书本页数。",
+  "text.bookpaste.config.pages.button": "扩展书本页数：%s",
+  "text.bookpaste.config.pages.unlimited": "开启",
+  "text.bookpaste.config.pages.vanilla": "关闭",
+  "text.bookpaste.config.pages.description": "仅当服务器确认支持时才允许超过100页。支持单人游戏和安装了BookPaste的服务器。未确认时仍限制为100页。若要加载超过100页的未签名书，请保留BookPaste。",
+  "text.bookpaste.config.max_pages.label": "页数上限：",
+  "text.bookpaste.config.max_pages.description": "默认为100，0表示不限。更改适用于单人游戏。",
+  "text.bookpaste.config.pages.heading": "书本页数设置",
+  "text.bookpaste.config.pages.help_local": "在这里调整单人游戏设置。",
+  "text.bookpaste.config.pages.help_server": "连接服务器时会显示服务器设置。",
+  "text.bookpaste.config.pages.custom_button": "自定义页数上限：%s",
+  "text.bookpaste.config.max_pages.invalid": "请输入0到2147483647之间的整数。",
+  "text.bookpaste.config.max_pages.server_label": "服务器上限：",
+  "text.bookpaste.config.max_pages.server_description": "由服务器设置，无法在此更改。0表示不限。"
 }

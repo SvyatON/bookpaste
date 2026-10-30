@@ -28,5 +28,19 @@
   "text.bookpaste.unit.line.one": "行",
   "text.bookpaste.unit.line.other": "行",
   "text.bookpaste.unit.sign.one": "枚の看板",
-  "text.bookpaste.unit.sign.other": "枚の看板"
+  "text.bookpaste.unit.sign.other": "枚の看板",
+  "text.bookpaste.limit.changed": "新しい上限：%sページ。本のページ数を減らしてください。",
+  "text.bookpaste.config.pages.button": "ページ数の拡張: %s",
+  "text.bookpaste.config.pages.unlimited": "オン",
+  "text.bookpaste.config.pages.vanilla": "オフ",
+  "text.bookpaste.config.pages.description": "サーバーが対応を確認した場合のみ100ページを超えられます。シングルプレイとBookPaste導入済みサーバーに対応しています。確認できない場合は100ページのままです。100ページを超える未署名の本を読み込むにはBookPasteを導入したままにしてください。",
+  "text.bookpaste.config.max_pages.label": "ページ数の上限:",
+  "text.bookpaste.config.max_pages.description": "通常は100、0は無制限です。変更はシングルプレイに適用されます。",
+  "text.bookpaste.config.pages.heading": "ページ数の設定",
+  "text.bookpaste.config.pages.help_local": "ここではシングルプレイの設定を変更します。",
+  "text.bookpaste.config.pages.help_server": "接続中はサーバーの設定を表示します。",
+  "text.bookpaste.config.pages.custom_button": "独自のページ上限: %s",
+  "text.bookpaste.config.max_pages.invalid": "0から2147483647までの整数を入力してください。",
+  "text.bookpaste.config.max_pages.server_label": "サーバーの上限:",
+  "text.bookpaste.config.max_pages.server_description": "サーバーが設定するため、ここでは変更できません。0は無制限です。"
 }

@@ -1,4 +1,5 @@
-﻿{
+{
+  "text.bookpaste.limit.changed": "New limit: %s pages. Shorten this book.",
   "text.bookpaste.done": "Pasted text across %s %s.",
   "text.bookpaste.partial": "The book is full. %s characters remain in the clipboard. About %s more %s needed.",
   "text.bookpaste.nospace": "There is no space left in this book. About %s more %s needed.",
@@ -28,6 +29,18 @@
   "text.bookpaste.unit.line.one": "line",
   "text.bookpaste.unit.line.other": "lines",
   "text.bookpaste.unit.sign.one": "sign",
-  "text.bookpaste.unit.sign.other": "signs"
+  "text.bookpaste.unit.sign.other": "signs",
+  "text.bookpaste.config.pages.button": "Extended book pages: %s",
+  "text.bookpaste.config.pages.unlimited": "On",
+  "text.bookpaste.config.pages.vanilla": "Off",
+  "text.bookpaste.config.pages.description": "Allows more than 100 pages only when the server confirms support. Singleplayer and BookPaste servers support this. Without confirmation the limit stays at 100 pages. Keep BookPaste installed to load unsigned books over 100 pages.",
+  "text.bookpaste.config.max_pages.label": "Page limit:",
+  "text.bookpaste.config.max_pages.description": "100 is the default; 0 means no limit. Changes apply to singleplayer.",
+  "text.bookpaste.config.pages.heading": "Book page settings",
+  "text.bookpaste.config.pages.help_local": "Edit settings for singleplayer here.",
+  "text.bookpaste.config.pages.help_server": "Server settings are shown when connected.",
+  "text.bookpaste.config.pages.custom_button": "Custom page limit: %s",
+  "text.bookpaste.config.max_pages.invalid": "Enter a whole number from 0 to 2147483647.",
+  "text.bookpaste.config.max_pages.server_label": "Server limit:",
+  "text.bookpaste.config.max_pages.server_description": "Controlled by the server. You cannot change this value here. 0 means no limit."
 }
-

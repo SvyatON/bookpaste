@@ -1,6 +1,7 @@
 # Gradle
 .gradle/
 build/
+**/build/
 
 # IDEs
 .idea/
@@ -8,6 +9,8 @@ out/
 .vscode/
 
 # Project Specific
+.tools/
+logs/
 run/
 temp/
 build-source-snapshots/

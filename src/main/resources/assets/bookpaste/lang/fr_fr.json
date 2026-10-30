@@ -28,5 +28,19 @@
   "text.bookpaste.unit.line.one": "ligne",
   "text.bookpaste.unit.line.other": "lignes",
   "text.bookpaste.unit.sign.one": "panneau",
-  "text.bookpaste.unit.sign.other": "panneaux"
+  "text.bookpaste.unit.sign.other": "panneaux",
+  "text.bookpaste.limit.changed": "Nouvelle limite : %s pages. Raccourcissez le livre.",
+  "text.bookpaste.config.pages.button": "Pages étendues : %s",
+  "text.bookpaste.config.pages.unlimited": "Activé",
+  "text.bookpaste.config.pages.vanilla": "Désactivé",
+  "text.bookpaste.config.pages.description": "Autorise plus de 100 pages uniquement si le serveur confirme sa compatibilité. Le mode solo et les serveurs BookPaste le permettent. Sans confirmation, la limite reste de 100 pages. Gardez BookPaste installé pour charger les livres non signés de plus de 100 pages.",
+  "text.bookpaste.config.max_pages.label": "Limite de pages :",
+  "text.bookpaste.config.max_pages.description": "100 est la valeur normale ; 0 signifie illimité. Les modifications concernent le mode solo.",
+  "text.bookpaste.config.pages.heading": "Réglages du nombre de pages",
+  "text.bookpaste.config.pages.help_local": "Réglez ici les parties en solo.",
+  "text.bookpaste.config.pages.help_server": "En ligne, les réglages du serveur sont affichés.",
+  "text.bookpaste.config.pages.custom_button": "Limite personnalisée : %s",
+  "text.bookpaste.config.max_pages.invalid": "Saisissez un entier entre 0 et 2147483647.",
+  "text.bookpaste.config.max_pages.server_label": "Limite du serveur :",
+  "text.bookpaste.config.max_pages.server_description": "Définie par le serveur. Non modifiable ici. 0 signifie illimité."
 }

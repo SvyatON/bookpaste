@@ -1,13 +1,56 @@
 package ru.svyaton.bookpaste;
 
 import java.util.Locale;
-
+//? if >=26.1 {
+/*import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;*/
+//?}
+//? if >=1.19 {
+//? if <26.1 {
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
+//?}
+//?}
+//? if <1.19 {
+/*import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
+import net.minecraft.text.LiteralText;*/
+//?}
 
 public final class PasteHelper {
     private PasteHelper() {
+    }
+
+    public static String continueFormatting(String page, String remaining) {
+        if (remaining.isEmpty()) return remaining;
+        char color = 'r';
+        int decorations = 0;
+        boolean formatted = false;
+        String flags = "klmno";
+        for (int i = 0; i + 1 < page.length(); i++) {
+            if (page.charAt(i) != '\u00a7') continue;
+            char code = Character.toLowerCase(page.charAt(++i));
+            if (code == 'r' || "0123456789abcdef".indexOf(code) >= 0) {
+                color = code;
+                decorations = 0;
+                formatted = true;
+            } else {
+                int flag = flags.indexOf(code);
+                if (flag >= 0) {
+                    decorations |= 1 << flag;
+                    formatted = true;
+                }
+            }
+        }
+        if (!formatted) return remaining;
+        StringBuilder prefix = new StringBuilder().append('\u00a7').append(color);
+        for (int i = 0; i < flags.length(); i++) {
+            if ((decorations & 1 << i) != 0) prefix.append('\u00a7').append(flags.charAt(i));
+        }
+        return prefix.append(remaining).toString();
     }
 
     public static String normalizeClipboard(String text) {
@@ -76,7 +119,47 @@ public final class PasteHelper {
 
         return new PageSlice(base + addition, trimLeft(remaining.substring(preferredCut)));
     }
+    //? if >=26.1 {
+    /*public static Component createStatusMessage(int pagesUsed, String remaining, PageFitter fitter) {
+        String languageCode = getLanguageCode();
+        if (remaining.isEmpty()) {
+            return Component.literal(I18n.get("text.bookpaste.done", pagesUsed,
+                    translateCountWord("page", pagesUsed, languageCode)));
+        }
 
+        int booksNeeded = Math.max(1, estimateBooksNeeded(remaining, fitter));
+        if (pagesUsed == 0) {
+            return Component.literal(I18n.get("text.bookpaste.nospace", booksNeeded,
+                    translateCountWord("book", booksNeeded, languageCode)));
+        }
+
+        return Component.literal(I18n.get("text.bookpaste.partial", remaining.length(), booksNeeded,
+                translateCountWord("book", booksNeeded, languageCode)));
+    }
+
+    public static Component createSignStatusMessage(int linesUsed, String remaining, PageFitter fitter) {
+        if (remaining == null || remaining.isEmpty()) {
+            int shownLines = Math.max(1, linesUsed);
+            return Component.literal(I18n.get("text.bookpaste.sign.done",
+                    shownLines,
+                    translateCountWord("line", shownLines, getLanguageCode())));
+        }
+
+        int signsNeeded = estimateSignsNeeded(remaining, fitter);
+        if (linesUsed <= 0) {
+            return Component.literal(I18n.get("text.bookpaste.sign.nospace",
+                    signsNeeded,
+                    translateCountWord("sign", signsNeeded, getLanguageCode())));
+        }
+
+        return Component.literal(I18n.get("text.bookpaste.sign.partial",
+                remaining.length(),
+                signsNeeded,
+                translateCountWord("sign", signsNeeded, getLanguageCode())));
+    }*/
+    //?}
+    //? if >=1.19 {
+    //? if <26.1 {
     public static Text createStatusMessage(int pagesUsed, String remaining, PageFitter fitter) {
         String languageCode = getLanguageCode();
         if (remaining.isEmpty()) {
@@ -114,6 +197,47 @@ public final class PasteHelper {
                 signsNeeded,
                 translateCountWord("sign", signsNeeded, getLanguageCode())));
     }
+    //?}
+    //?}
+    //? if <1.19 {
+    /*public static Text createStatusMessage(int pagesUsed, String remaining, PageFitter fitter) {
+        String languageCode = getLanguageCode();
+        if (remaining.isEmpty()) {
+            return new LiteralText(I18n.translate("text.bookpaste.done", pagesUsed,
+                    translateCountWord("page", pagesUsed, languageCode)));
+        }
+
+        int booksNeeded = Math.max(1, estimateBooksNeeded(remaining, fitter));
+        if (pagesUsed == 0) {
+            return new LiteralText(I18n.translate("text.bookpaste.nospace", booksNeeded,
+                    translateCountWord("book", booksNeeded, languageCode)));
+        }
+
+        return new LiteralText(I18n.translate("text.bookpaste.partial", remaining.length(), booksNeeded,
+                translateCountWord("book", booksNeeded, languageCode)));
+    }
+
+    public static Text createSignStatusMessage(int linesUsed, String remaining, PageFitter fitter) {
+        if (remaining == null || remaining.isEmpty()) {
+            int shownLines = Math.max(1, linesUsed);
+            return new LiteralText(I18n.translate("text.bookpaste.sign.done",
+                    shownLines,
+                    translateCountWord("line", shownLines, getLanguageCode())));
+        }
+
+        int signsNeeded = estimateSignsNeeded(remaining, fitter);
+        if (linesUsed <= 0) {
+            return new LiteralText(I18n.translate("text.bookpaste.sign.nospace",
+                    signsNeeded,
+                    translateCountWord("sign", signsNeeded, getLanguageCode())));
+        }
+
+        return new LiteralText(I18n.translate("text.bookpaste.sign.partial",
+                remaining.length(),
+                signsNeeded,
+                translateCountWord("sign", signsNeeded, getLanguageCode())));
+    }*/
+    //?}
 
     public static int estimateSignsNeeded(String remaining, PageFitter fitter) {
         if (remaining == null || remaining.isEmpty()) {
@@ -210,24 +334,25 @@ public final class PasteHelper {
 
         int usedPages = 0;
         int pageInBook = 0;
+        int pageLimit = BookPasteBookLimits.pageLimit();
 
         while (!left.isEmpty()) {
-            PageSlice slice = buildPage("", left, fitter, pageInBook == 99);
+            PageSlice slice = buildPage("", left, fitter, pageInBook == pageLimit - 1);
             if (slice.pageText().isEmpty() && slice.remainingText().equals(left)) {
                 return 1;
             }
 
             left = slice.remainingText();
             usedPages++;
-            pageInBook = (pageInBook + 1) % 100;
+            pageInBook = (pageInBook + 1) % pageLimit;
         }
 
-        return Math.max(1, (usedPages + 100 - 1) / 100);
+        return Math.max(1, (usedPages - 1) / pageLimit + 1);
     }
 
     private static int findMaxAppend(String base, String remaining, PageFitter fitter) {
         int low = 0;
-        int high = remaining.length();
+        int high = Math.min(remaining.length(), Math.max(0, BookPasteBookLimits.MAX_PAGE_LENGTH - base.length()));
 
         while (low < high) {
             int mid = (low + high + 1) / 2;
@@ -239,6 +364,11 @@ public final class PasteHelper {
             }
         }
 
+        if (low > 0 && low < remaining.length()
+                && (Character.isHighSurrogate(remaining.charAt(low - 1)) && Character.isLowSurrogate(remaining.charAt(low))
+                    || remaining.charAt(low - 1) == '\u00a7')) {
+            low--;
+        }
         return low;
     }
 
@@ -372,19 +502,27 @@ public final class PasteHelper {
     }
 
     private static String getLanguageCode() {
+        //? if >=26.1 {
+        /*Minecraft client = Minecraft.getInstance();
+        if (client == null) {
+            return "en_us";
+        }
+        Object language = client.getLanguageManager().getSelected();*/
+        //?} else {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client == null) {
             return "en_us";
         }
         Object language = client.getLanguageManager().getLanguage();
-        if (language instanceof String code) {
-            return code;
+        //?}
+        if (language instanceof String) {
+            return (String) language;
         }
 
         try {
             Object code = language.getClass().getMethod("getCode").invoke(language);
-            if (code instanceof String stringCode) {
-                return stringCode;
+            if (code instanceof String) {
+                return (String) code;
             }
         } catch (ReflectiveOperationException ignored) {
         }
@@ -395,10 +533,17 @@ public final class PasteHelper {
     private static String translateCountWord(String noun, int count, String languageCode) {
         String pluralForm = getPluralForm(count, languageCode);
         String key = "text.bookpaste.unit." + noun + "." + pluralForm;
+        //? if >=26.1 {
+        /*if (I18n.get(key).equals(key)) {
+            key = "text.bookpaste.unit." + noun + ".other";
+        }
+        return I18n.get(key);*/
+        //?} else {
         if (!I18n.hasTranslation(key)) {
             key = "text.bookpaste.unit." + noun + ".other";
         }
         return I18n.translate(key);
+        //?}
     }
 
     private static String getPluralForm(int count, String languageCode) {
@@ -424,7 +569,21 @@ public final class PasteHelper {
         boolean fits(String candidate);
     }
 
-    public record PageSlice(String pageText, String remainingText) {
+    public static final class PageSlice {
+        private final String pageText;
+        private final String remainingText;
+
+        public PageSlice(String pageText, String remainingText) {
+            this.pageText = pageText;
+            this.remainingText = remainingText;
+        }
+
+        public String pageText() {
+            return this.pageText;
+        }
+
+        public String remainingText() {
+            return this.remainingText;
+        }
     }
 }
-

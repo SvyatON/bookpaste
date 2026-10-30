@@ -28,5 +28,19 @@
   "text.bookpaste.unit.line.one": "línea",
   "text.bookpaste.unit.line.other": "líneas",
   "text.bookpaste.unit.sign.one": "cartel",
-  "text.bookpaste.unit.sign.other": "carteles"
+  "text.bookpaste.unit.sign.other": "carteles",
+  "text.bookpaste.limit.changed": "Nuevo límite: %s páginas. Acorta el libro.",
+  "text.bookpaste.config.pages.button": "Páginas ampliadas: %s",
+  "text.bookpaste.config.pages.unlimited": "Activado",
+  "text.bookpaste.config.pages.vanilla": "Desactivado",
+  "text.bookpaste.config.pages.description": "Permite más de 100 páginas solo si el servidor confirma la compatibilidad. Funciona en un jugador y en servidores con BookPaste. Sin confirmación, el límite sigue siendo 100 páginas. Mantén BookPaste instalado para cargar libros sin firmar de más de 100 páginas.",
+  "text.bookpaste.config.max_pages.label": "Límite de páginas:",
+  "text.bookpaste.config.max_pages.description": "100 es el valor normal; 0 significa sin límite. Los cambios se aplican a un jugador.",
+  "text.bookpaste.config.pages.heading": "Ajustes del número de páginas",
+  "text.bookpaste.config.pages.help_local": "Configura aquí las partidas de un jugador.",
+  "text.bookpaste.config.pages.help_server": "Al conectarte se muestran los ajustes del servidor.",
+  "text.bookpaste.config.pages.custom_button": "Límite personalizado: %s",
+  "text.bookpaste.config.max_pages.invalid": "Introduce un número entero entre 0 y 2147483647.",
+  "text.bookpaste.config.max_pages.server_label": "Límite del servidor:",
+  "text.bookpaste.config.max_pages.server_description": "Lo establece el servidor. No puedes cambiarlo aquí. 0 significa sin límite."
 }

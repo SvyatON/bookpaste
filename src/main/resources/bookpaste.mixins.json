@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "package": "ru.svyaton.bookpaste.mixin",
+  "compatibilityLevel": "${mixin_java}",
+  "mixins": [
+    "UnlimitedWritableBookMixin",
+    "UnlimitedBookPacketMixin",
+    "ServerBookLimitMixin"
+  ],
+  "client": [
+    "ClientBookLimitMixin",
+    "UnlimitedBookEditScreenMixin",
+    "BookEditScreenModernMixin",
+    "AbstractSignEditScreenKeyInputMixin",
+    "EditBoxMixin",
+    "ScribbleRichEditBoxMixin",
+    "ScribbleBookPageLimitMixin",
+    "ScholarFormattedStringEditorMixin",
+    "ScholarBookPageLimitMixin",
+    "ScholarBookEditPageLimitMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

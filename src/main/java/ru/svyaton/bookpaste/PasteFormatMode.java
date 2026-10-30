@@ -19,12 +19,4 @@ public enum PasteFormatMode {
         return values[(this.ordinal() + 1) % values.length];
     }
 
-    public static PasteFormatMode byId(String id) {
-        for (PasteFormatMode mode : values()) {
-            if (mode.id.equals(id)) {
-                return mode;
-            }
-        }
-        return SMART_FILL;
-    }
 }

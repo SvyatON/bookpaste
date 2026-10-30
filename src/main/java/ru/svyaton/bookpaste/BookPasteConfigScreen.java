@@ -57,6 +57,7 @@ import net.minecraft.text.TranslatableText;*/
 
 public final class BookPasteConfigScreen extends Screen {
     private static final int MAX_MOUSE_BUTTON = 7;
+    private BookPasteConfigLayout layout;
     private final Screen parent;
     private PasteFormatMode formatMode;
     private boolean customBookPages;
@@ -156,14 +157,20 @@ public final class BookPasteConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        int centerX = this.width / 2;
-        int buttonWidth = 260;
-        int buttonX = centerX - buttonWidth / 2;
-        int centerButtonWidth = 126;
-
-        int layoutOffset = 0;
         //? if >=26.1 {
-        /*layoutOffset = 16;
+        /*this.remoteServer = Minecraft.getInstance().getConnection() != null && !Minecraft.getInstance().hasSingleplayerServer();
+        this.layout = new BookPasteConfigLayout(this.width, this.height, this.remoteServer,
+                key -> Component.translatable("text.bookpaste.config." + key).getString(), this.getFont()::width);*/
+        //?} else {
+        this.remoteServer = MinecraftClient.getInstance().getNetworkHandler() != null && !MinecraftClient.getInstance().isInSingleplayer();
+        this.layout = new BookPasteConfigLayout(this.width, this.height, this.remoteServer,
+                key -> bookpaste$text("text.bookpaste.config." + key).getString(), this.textRenderer::getWidth);
+        //?}
+        int buttonWidth = this.layout.width;
+        int buttonX = this.layout.left;
+        int centerButtonWidth = this.layout.halfWidth;
+        //? if >=26.1 {
+        /*
         this.remoteServer = Minecraft.getInstance().getConnection() != null && !Minecraft.getInstance().hasSingleplayerServer();
         String pageLimitText = this.pageLimitField == null
                 ? Integer.toString(this.customBookPages ? this.maxPages : 100)
@@ -171,12 +178,12 @@ public final class BookPasteConfigScreen extends Screen {
         if (this.remoteServer) pageLimitText = this.serverPageLimitText();
         this.pagesButton = this.addRenderableWidget(Button.builder(this.getPageLimitButtonText(), button -> {
             this.togglePageLimit();
-        }).pos(buttonX, this.height / 2 - 90).size(buttonWidth, 20)
+        }).pos(buttonX, this.layout.pagesY).size(buttonWidth, 20)
                 .tooltip(net.minecraft.client.gui.components.Tooltip.create(
                         Component.translatable("text.bookpaste.config.max_pages.description"))).build());
         this.pagesButton.active = !this.remoteServer;
         this.pageLimitField = new net.minecraft.client.gui.components.EditBox(this.getFont(),
-                centerX + 36, this.height / 2 - 62, 94, 20,
+                this.layout.fieldX, this.layout.limitY, this.layout.fieldWidth, 20,
                 Component.translatable("text.bookpaste.config.max_pages.label"));
         this.pageLimitField.setMaxLength(10);
         this.pageLimitField.setValue(pageLimitText);
@@ -186,17 +193,17 @@ public final class BookPasteConfigScreen extends Screen {
         this.addRenderableWidget(this.pageLimitField);*/
         //?}
 //? if <26.1 {
-layoutOffset = 16;
+
         this.remoteServer = MinecraftClient.getInstance().getNetworkHandler() != null && !MinecraftClient.getInstance().isInSingleplayer();
         String pageLimitText = this.pageLimitField == null
                 ? Integer.toString(this.customBookPages ? this.maxPages : 100)
                 : this.pageLimitField.getText();
         if (this.remoteServer) pageLimitText = this.serverPageLimitText();
-        this.pagesButton = this.bookpaste$button(buttonX, this.height / 2 - 90, buttonWidth,
+        this.pagesButton = this.bookpaste$button(buttonX, this.layout.pagesY, buttonWidth,
                 this.getPageLimitButtonText(), button -> this.togglePageLimit());
         this.pagesButton.active = !this.remoteServer;
         this.pageLimitField = new net.minecraft.client.gui.widget.TextFieldWidget(this.textRenderer,
-                centerX + 36, this.height / 2 - 62, 94, 20,
+                this.layout.fieldX, this.layout.limitY, this.layout.fieldWidth, 20,
                 bookpaste$text("text.bookpaste.config.max_pages.label"));
         this.pageLimitField.setMaxLength(10);
         this.pageLimitField.setText(pageLimitText);
@@ -214,18 +221,18 @@ layoutOffset = 16;
         /*this.addRenderableWidget(Button.builder(this.getModeButtonText(), button -> {
             this.formatMode = this.formatMode.next();
             button.setMessage(this.getModeButtonText());
-        }).pos(buttonX, this.height / 2 - 20 + layoutOffset).size(buttonWidth, 20).build());*/
+        }).pos(buttonX, this.layout.modeY).size(buttonWidth, 20).build());*/
         //?}
         //? if >=1.19.3 {
         //? if <26.1 {
         this.bookpaste$addChild(ButtonWidget.builder(this.getModeButtonText(), button -> {
             this.formatMode = this.formatMode.next();
             button.setMessage(this.getModeButtonText());
-        }).dimensions(buttonX, this.height / 2 - 20 + layoutOffset, buttonWidth, 20).build());
+        }).dimensions(buttonX, this.layout.modeY, buttonWidth, 20).build());
         //?}
         //?}
         //? if <1.19.3 {
-        /*this.bookpaste$addChild(new ButtonWidget(buttonX, this.height / 2 - 20 + layoutOffset, buttonWidth, 20, this.getModeButtonText(), button -> {
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.modeY, buttonWidth, 20, this.getModeButtonText(), button -> {
             this.formatMode = this.formatMode.next();
             button.setMessage(this.getModeButtonText());
         }));*/
@@ -236,7 +243,7 @@ layoutOffset = 16;
             this.waitingForKey = true;
             this.waitingForKeyTicks = 0;
             button.setMessage(Component.translatable("text.bookpaste.config.hotkey.listening"));
-        }).pos(buttonX, this.height / 2 + 18 + layoutOffset).size(buttonWidth, 20).build());*/
+        }).pos(buttonX, this.layout.keyY).size(buttonWidth, 20).build());*/
         //?}
         //? if >=1.19.3 {
         //? if <26.1 {
@@ -244,19 +251,19 @@ layoutOffset = 16;
             this.waitingForKey = true;
             this.waitingForKeyTicks = 0;
             button.setMessage(Text.translatable("text.bookpaste.config.hotkey.listening"));
-        }).dimensions(buttonX, this.height / 2 + 18 + layoutOffset, buttonWidth, 20).build());
+        }).dimensions(buttonX, this.layout.keyY, buttonWidth, 20).build());
         //?}
         //?}
         //? if <1.19.3 {
         //? if >=1.19 {
-        /*this.keyBindingButton = this.bookpaste$addChild(new ButtonWidget(buttonX, this.height / 2 + 18 + layoutOffset, buttonWidth, 20, this.getKeyBindingButtonText(), button -> {
+        /*this.keyBindingButton = this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.keyY, buttonWidth, 20, this.getKeyBindingButtonText(), button -> {
             this.waitingForKey = true;
             this.waitingForKeyTicks = 0;
             button.setMessage(Text.translatable("text.bookpaste.config.hotkey.listening"));
         }));*/
         //?}
         //? if <1.19 {
-        /*this.keyBindingButton = this.bookpaste$addChild(new ButtonWidget(buttonX, this.height / 2 + 18 + layoutOffset, buttonWidth, 20, this.getKeyBindingButtonText(), button -> {
+        /*this.keyBindingButton = this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.keyY, buttonWidth, 20, this.getKeyBindingButtonText(), button -> {
             this.waitingForKey = true;
             this.waitingForKeyTicks = 0;
             button.setMessage(new TranslatableText("text.bookpaste.config.hotkey.listening"));
@@ -269,7 +276,7 @@ layoutOffset = 16;
             BookPasteHotkeys.resetToggleFormatModeKey(Minecraft.getInstance());
             this.waitingForKey = false;
             this.updateKeyBindingButtonText();
-        }).pos(centerX - 130, this.height / 2 + 46 + layoutOffset).size(centerButtonWidth, 20).build());*/
+        }).pos(buttonX, this.layout.actionsY).size(centerButtonWidth, 20).build());*/
         //?}
         //? if >=1.19.3 {
         //? if <26.1 {
@@ -277,19 +284,19 @@ layoutOffset = 16;
             BookPasteHotkeys.resetToggleFormatModeKey(MinecraftClient.getInstance());
             this.waitingForKey = false;
             this.updateKeyBindingButtonText();
-        }).dimensions(centerX - 130, this.height / 2 + 46 + layoutOffset, centerButtonWidth, 20).build());
+        }).dimensions(buttonX, this.layout.actionsY, centerButtonWidth, 20).build());
         //?}
         //?}
         //? if <1.19.3 {
         //? if >=1.19 {
-        /*this.bookpaste$addChild(new ButtonWidget(centerX - 130, this.height / 2 + 46 + layoutOffset, centerButtonWidth, 20, Text.translatable("text.bookpaste.config.hotkey.reset"), button -> {
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.actionsY, centerButtonWidth, 20, Text.translatable("text.bookpaste.config.hotkey.reset"), button -> {
             BookPasteHotkeys.resetToggleFormatModeKey(MinecraftClient.getInstance());
             this.waitingForKey = false;
             this.updateKeyBindingButtonText();
         }));*/
         //?}
         //? if <1.19 {
-        /*this.bookpaste$addChild(new ButtonWidget(centerX - 130, this.height / 2 + 46 + layoutOffset, centerButtonWidth, 20, new TranslatableText("text.bookpaste.config.hotkey.reset"), button -> {
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.actionsY, centerButtonWidth, 20, new TranslatableText("text.bookpaste.config.hotkey.reset"), button -> {
             BookPasteHotkeys.resetToggleFormatModeKey(MinecraftClient.getInstance());
             this.waitingForKey = false;
             this.updateKeyBindingButtonText();
@@ -300,23 +307,23 @@ layoutOffset = 16;
         //? if >=26.1 {
         /*this.addRenderableWidget(Button.builder(Component.translatable("text.bookpaste.config.hotkey.controls"), button ->
                 Minecraft.getInstance().setScreenAndShow(BookPasteHotkeys.createControlsScreen(Minecraft.getInstance(), this))
-        ).pos(centerX + 4, this.height / 2 + 46 + layoutOffset).size(centerButtonWidth, 20).build());*/
+        ).pos(buttonX + centerButtonWidth + 8, this.layout.actionsY).size(centerButtonWidth, 20).build());*/
         //?}
         //? if >=1.19.3 {
         //? if <26.1 {
         this.bookpaste$addChild(ButtonWidget.builder(Text.translatable("text.bookpaste.config.hotkey.controls"), button ->
                 this.bookpaste$open(BookPasteHotkeys.createControlsScreen(MinecraftClient.getInstance(), this))
-        ).dimensions(centerX + 4, this.height / 2 + 46 + layoutOffset, centerButtonWidth, 20).build());
+        ).dimensions(buttonX + centerButtonWidth + 8, this.layout.actionsY, centerButtonWidth, 20).build());
         //?}
         //?}
         //? if <1.19.3 {
         //? if >=1.19 {
-        /*this.bookpaste$addChild(new ButtonWidget(centerX + 4, this.height / 2 + 46 + layoutOffset, centerButtonWidth, 20, Text.translatable("text.bookpaste.config.hotkey.controls"), button ->
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX + centerButtonWidth + 8, this.layout.actionsY, centerButtonWidth, 20, Text.translatable("text.bookpaste.config.hotkey.controls"), button ->
                 this.bookpaste$open(BookPasteHotkeys.createControlsScreen(MinecraftClient.getInstance(), this))
         ));*/
         //?}
         //? if <1.19 {
-        /*this.bookpaste$addChild(new ButtonWidget(centerX + 4, this.height / 2 + 46 + layoutOffset, centerButtonWidth, 20, new TranslatableText("text.bookpaste.config.hotkey.controls"), button ->
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX + centerButtonWidth + 8, this.layout.actionsY, centerButtonWidth, 20, new TranslatableText("text.bookpaste.config.hotkey.controls"), button ->
                 this.bookpaste$open(BookPasteHotkeys.createControlsScreen(MinecraftClient.getInstance(), this))
         ));*/
         //?}
@@ -326,25 +333,25 @@ layoutOffset = 16;
         /*Button doneButton = this.addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> {
             this.saveConfig();
             Minecraft.getInstance().setScreenAndShow(this.parent);
-        }).pos(centerX - 102, this.height - 52).size(100, 20).build());*/
+        }).pos(buttonX, this.layout.footerY).size(centerButtonWidth, 20).build());*/
         //?}
         //? if >=1.19.3 {
         //? if <26.1 {
         this.doneButton = this.bookpaste$addChild(ButtonWidget.builder(Text.translatable("gui.done"), button -> {
             this.saveConfig();
             this.bookpaste$open(this.parent);
-        }).dimensions(centerX - 102, this.height - 52, 100, 20).build());
+        }).dimensions(buttonX, this.layout.footerY, centerButtonWidth, 20).build());
         //?}
         //?}
         //? if <1.19.3 {
         //? if >=1.19 {
-        /*this.doneButton = this.bookpaste$addChild(new ButtonWidget(centerX - 102, this.height - 52, 100, 20, Text.translatable("gui.done"), button -> {
+        /*this.doneButton = this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.footerY, centerButtonWidth, 20, Text.translatable("gui.done"), button -> {
             this.saveConfig();
             this.bookpaste$open(this.parent);
         }));*/
         //?}
         //? if <1.19 {
-        /*this.doneButton = this.bookpaste$addChild(new ButtonWidget(centerX - 102, this.height - 52, 100, 20, new TranslatableText("gui.done"), button -> {
+        /*this.doneButton = this.bookpaste$addChild(new ButtonWidget(buttonX, this.layout.footerY, centerButtonWidth, 20, new TranslatableText("gui.done"), button -> {
             this.saveConfig();
             this.bookpaste$open(this.parent);
         }));*/
@@ -354,23 +361,23 @@ layoutOffset = 16;
         //? if >=26.1 {
         /*this.addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), button ->
                 Minecraft.getInstance().setScreenAndShow(this.parent)
-        ).pos(centerX + 2, this.height - 52).size(100, 20).build());*/
+        ).pos(buttonX + centerButtonWidth + 8, this.layout.footerY).size(centerButtonWidth, 20).build());*/
         //?}
         //? if >=1.19.3 {
         //? if <26.1 {
         this.bookpaste$addChild(ButtonWidget.builder(Text.translatable("gui.cancel"), button ->
                 this.bookpaste$open(this.parent)
-        ).dimensions(centerX + 2, this.height - 52, 100, 20).build());
+        ).dimensions(buttonX + centerButtonWidth + 8, this.layout.footerY, centerButtonWidth, 20).build());
         //?}
         //?}
         //? if <1.19.3 {
         //? if >=1.19 {
-        /*this.bookpaste$addChild(new ButtonWidget(centerX + 2, this.height - 52, 100, 20, Text.translatable("gui.cancel"), button ->
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX + centerButtonWidth + 8, this.layout.footerY, centerButtonWidth, 20, Text.translatable("gui.cancel"), button ->
                 this.bookpaste$open(this.parent)
         ));*/
         //?}
         //? if <1.19 {
-        /*this.bookpaste$addChild(new ButtonWidget(centerX + 2, this.height - 52, 100, 20, new TranslatableText("gui.cancel"), button ->
+        /*this.bookpaste$addChild(new ButtonWidget(buttonX + centerButtonWidth + 8, this.layout.footerY, centerButtonWidth, 20, new TranslatableText("gui.cancel"), button ->
                 this.bookpaste$open(this.parent)
         ));*/
         //?}
@@ -531,118 +538,41 @@ private void togglePageLimit() {
     /*@Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         this.extractTransparentBackground(extractor);
-        extractor.centeredText(this.getFont(), this.getTitle(), this.width / 2, 20, 0xFFFFFFFF);
-
-        //? if >=26.1 {
-        extractor.centeredText(this.getFont(), Component.translatable("text.bookpaste.config.pages.heading"),
-                this.width / 2, this.height / 2 - 140, 0xFFFFFFFF);
-        extractor.centeredText(this.getFont(), Component.translatable("text.bookpaste.config.pages.help_local"),
-                this.width / 2, this.height / 2 - 124, 0xFFA0A0A0);
-        extractor.centeredText(this.getFont(), Component.translatable("text.bookpaste.config.pages.help_server"),
-                this.width / 2, this.height / 2 - 112, 0xFFA0A0A0);
-        //?}
-        int labelOffset = 0;
-        //? if >=26.1 {
-        labelOffset = 16;
-        //?}
-        //? if >=26.1 {
-        extractor.text(this.getFont(), Component.translatable(this.remoteServer
-                        ? "text.bookpaste.config.max_pages.server_label" : "text.bookpaste.config.max_pages.label"),
-                this.width / 2 - 130, this.height / 2 - 56, 0xFFA0A0A0);
-        //?}
-
-        int y = this.height / 2 - 36 + labelOffset;
-        extractor.centeredText(this.getFont(),
-                Component.translatable("text.bookpaste.config.mode.label"),
-                this.width / 2, y, 0xFFA0A0A0);
-
-        extractor.centeredText(this.getFont(),
-                Component.translatable("text.bookpaste.config.hotkey.label"),
-                this.width / 2, this.height / 2 + 4 + labelOffset, 0xFFA0A0A0);
-
+        extractor.centeredText(this.getFont(), this.getTitle(), this.width / 2, 8, 0xFFFFFFFF);
+        for (BookPasteConfigLayout.Label label : this.layout.labels) {
+            extractor.centeredText(this.getFont(), Component.literal(label.text), label.x, label.y, label.color);
+        }
         super.extractRenderState(extractor, mouseX, mouseY, delta);
     }*/
-    //?}
-//? if <26.1 {
-//? if >=1.20 {
-@Override
-public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-    //? if >=1.20.4 {
-    this.renderInGameBackground(context);
+    //?} else if >=1.20 {
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        //? if >=1.20.4 {
+        this.renderInGameBackground(context);
+        //?} else {
+        /*this.renderBackground(context);*/
+        //?}
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFFFF);
+        for (BookPasteConfigLayout.Label label : this.layout.labels) {
+            context.drawCenteredTextWithShadow(this.textRenderer, label.text, label.x, label.y, label.color);
+        }
+        super.render(context, mouseX, mouseY, delta);
+    }
     //?} else {
-    /*this.renderBackground(context);*/
+    /*@Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.renderBackground(matrices);
+        this.bookpaste$centered(matrices, this.title, this.width / 2, 8, 0xFFFFFFFF);
+        for (BookPasteConfigLayout.Label label : this.layout.labels) {
+            this.textRenderer.drawWithShadow(matrices, label.text,
+                    label.x - this.textRenderer.getWidth(label.text) / 2, label.y, label.color);
+        }
+        super.render(matrices, mouseX, mouseY, delta);
+        //? if <1.17 {
+        this.pageLimitField.render(matrices, mouseX, mouseY, delta);
+        //?}
+    }*/
     //?}
-    context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFFFF);
-
-    context.drawCenteredTextWithShadow(this.textRenderer, bookpaste$text("text.bookpaste.config.pages.heading"), this.width / 2, this.height / 2 -140, 0xFFFFFFFF);
-    context.drawCenteredTextWithShadow(this.textRenderer, bookpaste$text("text.bookpaste.config.pages.help_local"), this.width / 2, this.height / 2 -124, 0xFFA0A0A0);
-    context.drawCenteredTextWithShadow(this.textRenderer, bookpaste$text("text.bookpaste.config.pages.help_server"), this.width / 2, this.height / 2 -112, 0xFFA0A0A0);
-    context.drawCenteredTextWithShadow(this.textRenderer, bookpaste$text(this.remoteServer ? "text.bookpaste.config.max_pages.server_label" : "text.bookpaste.config.max_pages.label"), this.width / 2 - 83, this.height / 2 - 56, 0xFFA0A0A0);
-    int y = this.height / 2 - 20;
-    context.drawCenteredTextWithShadow(this.textRenderer,
-            Text.translatable("text.bookpaste.config.mode.label"),
-            this.width / 2, y, 0xFFA0A0A0);
-
-    context.drawCenteredTextWithShadow(this.textRenderer,
-            Text.translatable("text.bookpaste.config.hotkey.label"),
-            this.width / 2, this.height / 2 + 20, 0xFFA0A0A0);
-
-    super.render(context, mouseX, mouseY, delta);
-}
-//?}
-//? if >=1.19 {
-//? if <1.20 {
-/*@Override
-public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-    this.renderBackground(matrices);
-    this.textRenderer.drawWithShadow(matrices, this.title, this.width / 2, 20, 0xFFFFFFFF);
-
-    this.bookpaste$centered(matrices, bookpaste$text("text.bookpaste.config.pages.heading"), this.width / 2, this.height / 2 -140, 0xFFFFFFFF);
-    this.bookpaste$centered(matrices, bookpaste$text("text.bookpaste.config.pages.help_local"), this.width / 2, this.height / 2 -124, 0xFFA0A0A0);
-    this.bookpaste$centered(matrices, bookpaste$text("text.bookpaste.config.pages.help_server"), this.width / 2, this.height / 2 -112, 0xFFA0A0A0);
-    this.bookpaste$centered(matrices, bookpaste$text(this.remoteServer ? "text.bookpaste.config.max_pages.server_label" : "text.bookpaste.config.max_pages.label"), this.width / 2 - 83, this.height / 2 - 56, 0xFFA0A0A0);
-    int y = this.height / 2 - 20;
-    this.textRenderer.drawWithShadow(matrices,
-            Text.translatable("text.bookpaste.config.mode.label"),
-            this.width / 2, y, 0xFFA0A0A0);
-
-    this.textRenderer.drawWithShadow(matrices,
-            Text.translatable("text.bookpaste.config.hotkey.label"),
-            this.width / 2, this.height / 2 + 20, 0xFFA0A0A0);
-
-    super.render(matrices, mouseX, mouseY, delta);
-    //? if <1.17 {
-    this.pageLimitField.render(matrices, mouseX, mouseY, delta);
-    //?}
-}*/
-//?}
-//?}
-//? if <1.19 {
-/*@Override
-public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-    this.renderBackground(matrices);
-    this.textRenderer.drawWithShadow(matrices, this.title, this.width / 2, 20, 0xFFFFFFFF);
-
-    this.bookpaste$centered(matrices, bookpaste$text("text.bookpaste.config.pages.heading"), this.width / 2, this.height / 2 -140, 0xFFFFFFFF);
-    this.bookpaste$centered(matrices, bookpaste$text("text.bookpaste.config.pages.help_local"), this.width / 2, this.height / 2 -124, 0xFFA0A0A0);
-    this.bookpaste$centered(matrices, bookpaste$text("text.bookpaste.config.pages.help_server"), this.width / 2, this.height / 2 -112, 0xFFA0A0A0);
-    this.bookpaste$centered(matrices, bookpaste$text(this.remoteServer ? "text.bookpaste.config.max_pages.server_label" : "text.bookpaste.config.max_pages.label"), this.width / 2 - 83, this.height / 2 - 56, 0xFFA0A0A0);
-    int y = this.height / 2 - 20;
-    this.textRenderer.drawWithShadow(matrices,
-            new TranslatableText("text.bookpaste.config.mode.label"),
-            this.width / 2, y, 0xFFA0A0A0);
-
-    this.textRenderer.drawWithShadow(matrices,
-            new TranslatableText("text.bookpaste.config.hotkey.label"),
-            this.width / 2, this.height / 2 + 20, 0xFFA0A0A0);
-
-    super.render(matrices, mouseX, mouseY, delta);
-    //? if <1.17 {
-    this.pageLimitField.render(matrices, mouseX, mouseY, delta);
-    //?}
-}*/
-//?}
-//?}
 
     @Override
     public void tick() {

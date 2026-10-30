@@ -1,96 +1,55 @@
+<img src="src/main/resources/assets/bookpaste/icon.png" align="right" width="190" alt="BookPaste logo">
+
 # BookPaste
 
-Paste long texts into Minecraft books and signs with automatic page splitting and formatting.
+Paste long texts into Minecraft books and signs with automatic formatting and page splitting.
 
-**Version 2.2 | Fabric | By SvyatON**
+**Fabric | Version 2.2 | By SvyatON**
 
-## Downloads
-
-- [Modrinth](https://modrinth.com/mod/bookpaste)
-- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/bookpaste)
-
-Download the JAR matching your Minecraft version. Compiled releases are distributed through Modrinth and CurseForge; this repository contains the source code.
+[Download on Modrinth](https://modrinth.com/mod/bookpaste) | [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/bookpaste)
 
 ## Features
 
-- Paste clipboard text into writable books, automatically splitting it across pages.
-- Paste text into signs with word wrapping across lines.
-- Choose smart text wrapping or keep whole paragraphs together.
-- Keep unfinished text in the clipboard when a book or sign runs out of space.
-- Switch formatting modes with a configurable hotkey. The default is **F8**.
-- Receive temporary notifications above the hotbar without adding messages to chat.
-- Set a custom book page limit for singleplayer or a dedicated server, including limits below 100 pages.
-- View the server's page settings in the configuration menu. Server values are read-only and do not overwrite personal settings.
-- Use adapters for Scribble and Scholar. Compatibility depends on the Minecraft and optional-mod versions installed.
-- Includes English, Russian, Ukrainian, German, Spanish, French, Brazilian Portuguese, Japanese and Simplified Chinese translations.
+- Automatic page splitting for books and word wrapping for signs.
+- Smart wrapping or whole-paragraph formatting.
+- Unfinished text stays in your clipboard when there is no more space.
+- Custom page limits for singleplayer and servers.
+- Notifications above the hotbar, Scribble and Scholar adapters, and 9 languages.
 
-## Installation and use
+## Getting started
 
-1. Install Fabric Loader and Fabric API for your Minecraft version.
-2. Put the matching BookPaste JAR in your `mods` folder.
-3. Install Mod Menu if you want to open BookPaste's settings from the mods list.
-4. Open a writable book or a sign and press **Ctrl+V** to paste.
+Install **Fabric Loader**, **Fabric API** and the BookPaste JAR for your Minecraft version. Add **Mod Menu** to access the settings.
 
-For books above 100 pages, install BookPaste and Fabric API on the server and participating clients. Each Minecraft build uses the same JAR for its client and dedicated server. Without confirmed server support, the client keeps the standard 100-page limit.
+Open a writable book or sign and press **Ctrl+V**. Press **F8** to switch formatting modes; the hotkey is configurable.
 
-Forge and NeoForge ports are planned. The builds in this repository currently target Fabric.
+## Minecraft versions
 
-## Supported Minecraft versions
+Choose the matching range when downloading. One JAR covers the whole listed range: for example, **1.16.4 uses the 1.16.2-1.16.5 JAR**.
 
-One JAR covers each range below. For example, Minecraft **1.16.4** uses the **1.16.2-1.16.5** JAR.
+| Minecraft | Available JAR ranges |
+|---|---|
+| 1.16 | 1.16-1.16.1, 1.16.2-1.16.5 |
+| 1.17 | 1.17-1.17.1 |
+| 1.18 | 1.18-1.18.1, 1.18.2 |
+| 1.19 | 1.19-1.19.2, 1.19.3, 1.19.4 |
+| 1.20 | 1.20-1.20.1, 1.20.2-1.20.4, 1.20.5-1.20.6 |
+| 1.21 | 1.21-1.21.4, 1.21.5-1.21.8, 1.21.9-1.21.10, 1.21.11 |
+| 26.1 | 26.1-26.1.2 |
+| 26.2 | 26.2 |
+| 26.3 | 26.3 |
 
-JAR names follow `bookpaste-fabric-2.2+<Minecraft range>.jar`.
+Forge and NeoForge ports are planned.
 
-| Minecraft range | Build target | Java for Minecraft |
-|---|---|---|
-| 1.16-1.16.1 | `1.16.1-fabric` | 8+ |
-| 1.16.2-1.16.5 | `1.16.5-fabric` | 8+ |
-| 1.17-1.17.1 | `1.17.1-fabric` | 16+ |
-| 1.18-1.18.1 | `1.18.1-fabric` | 17+ |
-| 1.18.2 | `1.18.2-fabric` | 17+ |
-| 1.19-1.19.2 | `1.19.2-fabric` | 17+ |
-| 1.19.3 | `1.19.3-fabric` | 17+ |
-| 1.19.4 | `1.19.4-fabric` | 17+ |
-| 1.20-1.20.1 | `1.20.1-fabric` | 17+ |
-| 1.20.2-1.20.4 | `1.20.4-fabric` | 17+ |
-| 1.20.5-1.20.6 | `1.20.6-fabric` | 21+ |
-| 1.21-1.21.4 | `1.21.4-fabric` | 21+ |
-| 1.21.5-1.21.8 | `1.21.8-fabric` | 21+ |
-| 1.21.9-1.21.10 | `1.21.10-fabric` | 21+ |
-| 1.21.11 | `1.21.11-fabric` | 21+ |
-| 26.1-26.1.2 | `26.1.2-fabric` | 25+ |
-| 26.2 | `26.2-fabric` | 25+ |
-| 26.3 | `26.3-fabric` | 25+ |
+## Page settings
 
-## Configuration
+In singleplayer, set your page limit through Mod Menu. Disabling the custom limit restores 100 pages; enabling it again restores your last value.
 
-BookPaste creates `config/bookpaste.json` on the client and server. The generated file includes `#` comments explaining the settings; BookPaste supports this commented JSON format.
+To use more than 100 pages on a server, install BookPaste and Fabric API on both the server and clients. The same JAR works on either side. Server settings are read-only in the client menu and do not overwrite personal settings.
 
-Default values:
+<details>
+<summary>Server configuration</summary>
 
-```json
-{
-  "customBookPages": false,
-  "maxPages": 0,
-  "lastCustomMaxPages": 0,
-  "formatMode": "SMART_FILL"
-}
-```
-
-| Setting | Where it is used | Meaning |
-|---|---|---|
-| `customBookPages` | Client and server | Enables a custom page limit. `false` uses 100 pages. |
-| `maxPages` | Client and server | Page limit when enabled. `0` means no BookPaste page cap. Negative values are rejected. |
-| `lastCustomMaxPages` | Client only | Remembers the last custom value when the custom limit is switched off. |
-| `formatMode` | Client only | `SMART_FILL` wraps text at suitable boundaries; `WHOLE_PARAGRAPHS` keeps paragraphs together. |
-
-### Singleplayer
-
-Edit page settings through Mod Menu. Turning the custom limit off restores 100 pages; turning it back on restores the remembered value, including after restarting Minecraft.
-
-### Dedicated servers
-
-Only `customBookPages` and `maxPages` are needed on a server. For a 750-page limit:
+Edit `config/bookpaste.json` and restart the server. Only these two fields are needed on the server:
 
 ```json
 {
@@ -99,65 +58,25 @@ Only `customBookPages` and `maxPages` are needed on a server. For a 750-page lim
 }
 ```
 
-Restart the server after editing the file. Connected BookPaste clients automatically use the advertised limit. Their page controls are locked while connected; after disconnecting, their personal settings return.
+`false` restores 100 pages. With the custom limit enabled, `maxPages: 0` removes the BookPaste page cap. Negative values are rejected. The generated config includes `#` comments explaining all fields.
 
-If a saved writable book exceeds a reduced limit, saving or signing it is blocked with a warning above the hotbar. BookPaste does not automatically cut pages from the book. Existing signed books remain readable. Minecraft's packet and NBT size limits still apply when the BookPaste page cap is disabled.
+If a book exceeds a reduced limit, BookPaste blocks saving or signing and shows a warning without cutting pages. Minecraft's packet and NBT size limits still apply.
 
-Older `unlimitedBookPages` settings and `bookpaste-server.json` files are migrated automatically when needed, preserving existing settings and previous server limits.
+</details>
 
-## Building from source
+## Building
 
-Install **JDK 25** and set `JAVA_HOME` to its installation directory. JDK 25 runs the build; each Minecraft target has its own Java bytecode level, listed above.
-
-The project uses Gradle 9.4.0, Fabric Loom and Stonecutter 0.9.7. The first build requires internet access to download dependencies.
-
-On Windows, from the repository root:
+Use **JDK 25**. From the repository root on Windows:
 
 ```powershell
 .\gradlew.bat :26.3-fabric:build
 .\gradlew.bat buildAll --continue
 ```
 
-The first command builds only Fabric 26.3. The second builds all 18 configured Fabric targets. Replace `26.3-fabric` with another build target from the table to select a different version.
+The first command builds 26.3; the second builds all 18 Fabric targets through Stonecutter. On Linux and macOS, replace `.\gradlew.bat` with `bash ./gradlew`. The first build downloads its dependencies.
 
-On Linux and macOS:
-
-```sh
-bash ./gradlew :26.3-fabric:build
-bash ./gradlew buildAll --continue
-```
-
-Collected output:
-
-```text
-build/
-  fabric/
-    bookpaste-fabric-2.2+1.16-1.16.1.jar
-    bookpaste-fabric-2.2+1.16.2-1.16.5.jar
-    ...
-    bookpaste-fabric-2.2+26.3.jar
-    sources/
-      bookpaste-fabric-2.2+1.16-1.16.1-sources.jar
-      ...
-      bookpaste-fabric-2.2+26.3-sources.jar
-```
-
-Install the regular JAR in Minecraft. The `sources` folder contains separate source archives for reading the code. To build the mod yourself, use the full repository, including its Gradle wrapper, build scripts and resources.
-
-Per-target Gradle output is also available under `versions/<target>/build/libs/`. Generated files are excluded from Git.
-
-### Project structure
-
-- `src/main/`: shared Java sources and resources, with Stonecutter version branches.
-- `versions/dependencies/`: Minecraft, Fabric, mappings and Java settings for each target.
-- `gradle/`, `gradlew`, `gradlew.bat`: Gradle wrapper files.
-- `settings.gradle.kts`: target registration and plugin configuration.
-- `stonecutter.gradle.kts`: active editing target and tasks for building all targets.
-- `build.fabric.gradle.kts`: Fabric build and JAR collection.
-- `gradle.properties`: mod version and shared build settings.
-
-The active Stonecutter editing target is `1.21.11-fabric`. Running the wrapper without a task shows Gradle help. Build and package checks do not replace in-game testing of each Minecraft and optional-mod combination.
+Mod JARs are collected in **`build/fabric/`**. Source archives go in **`build/fabric/sources/`**. GitHub contains the buildable source; compiled releases are available on Modrinth and CurseForge.
 
 ## License
 
-[Apache License 2.0](LICENSE). Preserve the [NOTICE](NOTICE) when redistributing the project.
+[Apache License 2.0](LICENSE) | [NOTICE](NOTICE)

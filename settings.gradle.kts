@@ -4,6 +4,7 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.neoforged.net/releases")
         maven("https://maven.fabricmc.net/") { name = "Fabric" }
     }
 }

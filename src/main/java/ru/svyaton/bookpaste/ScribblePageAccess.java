@@ -106,6 +106,10 @@ public final class ScribblePageAccess {
     }
 
     public static LegacyReplacement stageLegacy(Object screen, List<String> text, List<String> original) throws ReflectiveOperationException {
+        return stageLegacy(screen, text, original, null);
+    }
+
+    public static LegacyReplacement stageLegacy(Object screen, List<String> text, List<String> original, List<String> backing) throws ReflectiveOperationException {
         Object cache = optionalField(screen, "richPages");
         if (cache == null) cache = optionalField(screen, "synchronizedPages");
         if (cache == null) return new LegacyReplacement(null, null, null, null);
@@ -114,10 +118,13 @@ public final class ScribblePageAccess {
         List<Object> replacement = new ArrayList<>();
         for (String page : text) replacement.add(converter.invoke(null, page));
         List<?> previous = cache instanceof List<?> ? new ArrayList<>((List<?>) cache) : new ArrayList<>(original);
-        return new LegacyReplacement(cache, replacement, new ArrayList<>(text), previous);
+        LegacyReplacement result = new LegacyReplacement(cache, replacement, new ArrayList<>(text), previous);
+        result.backing = backing;
+        return result;
     }
 
     public static final class LegacyReplacement {
+        private List<String> backing;
         private final Object cache;
         private final List<?> richText;
         private final List<String> text;
@@ -137,7 +144,11 @@ public final class ScribblePageAccess {
                 pages.clear();
                 pages.addAll(richText);
             } else if (cache != null) {
-                invoke(cache, "populate", new Class<?>[]{List.class}, text);
+                if (backing != null) {
+                    backing.clear();
+                    backing.addAll(text);
+                }
+                invoke(cache, "populate", new Class<?>[]{List.class}, backing == null ? text : backing);
             }
         }
 
@@ -148,7 +159,11 @@ public final class ScribblePageAccess {
                 pages.clear();
                 pages.addAll(previous);
             } else if (cache != null) {
-                invoke(cache, "populate", new Class<?>[]{List.class}, previous);
+                if (backing != null) {
+                    backing.clear();
+                    for (Object page : previous) backing.add((String) page);
+                }
+                invoke(cache, "populate", new Class<?>[]{List.class}, backing == null ? previous : backing);
             }
         }
     }

@@ -84,6 +84,7 @@ val resourceProperties = mapOf(
 )
 
 tasks.named<ProcessResources>("processResources") {
+    exclude("META-INF/neoforge.mods.toml")
     inputs.properties(resourceProperties)
     inputs.property("requires_keybinding_api", !unobfuscated)
     inputs.property("key_mapping_dependency", if (supportsServerBooks) fabricApiId

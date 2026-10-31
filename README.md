@@ -4,7 +4,7 @@
 
 Paste long texts into Minecraft books and signs with automatic formatting and page splitting.
 
-**Fabric | Version 2.2 | By SvyatON**
+**Fabric / NeoForge | Version 2.2 | By SvyatON**
 
 [Download on Modrinth](https://modrinth.com/mod/bookpaste) | [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/bookpaste)
 
@@ -20,7 +20,7 @@ Paste long texts into Minecraft books and signs with automatic formatting and pa
 
 ## Getting started
 
-Install **Fabric Loader**, **Fabric API** and the BookPaste JAR for your Minecraft version. Add **Mod Menu** to access the settings.
+For **Fabric**, install Fabric API and add Mod Menu to access the settings. For **NeoForge**, no additional dependency is needed; open the settings from the Mods screen. Use the BookPaste JAR matching your loader and Minecraft version.
 
 Open a writable book or sign and press **Ctrl+V**. Press **F8** to switch formatting modes; the hotkey is configurable.
 
@@ -28,7 +28,7 @@ Open a writable book or sign and press **Ctrl+V**. Press **F8** to switch format
 
 Choose the matching range when downloading. One JAR covers the whole listed range: for example, **1.16.4 uses the 1.16.2-1.16.5 JAR**.
 
-| Minecraft | Available JAR ranges |
+| Minecraft | Fabric JAR ranges |
 |---|---|
 | 1.16 | 1.16-1.16.1, 1.16.2-1.16.5 |
 | 1.17 | 1.17-1.17.1 |
@@ -40,13 +40,13 @@ Choose the matching range when downloading. One JAR covers the whole listed rang
 | 26.2 | 26.2 |
 | 26.3 | 26.3 |
 
-Forge and NeoForge ports are planned.
+The NeoForge port covers **1.21-1.21.1** with one JAR. Minimum NeoForge: **21.0.0-beta** for 1.21, **21.1.1** for 1.21.1. Requires Java 21. Forge is planned.
 
 ## Page settings
 
-In singleplayer, set your page limit through Mod Menu. Disabling the custom limit restores 100 pages; enabling it again restores your last value.
+In singleplayer, set your page limit through the settings screen. Disabling the custom limit restores 100 pages; enabling it again restores your last value.
 
-To use more than 100 pages on a server, install BookPaste and Fabric API on both the server and clients. The same JAR works on either side. Server settings are read-only in the client menu and do not overwrite personal settings.
+To use more than 100 pages on a server, install BookPaste on both the server and clients. Fabric also requires Fabric API; NeoForge needs no extra dependency. The same JAR works on either side. Server settings are read-only in the client menu and do not overwrite personal settings.
 
 <details>
 <summary>Server configuration</summary>
@@ -72,12 +72,13 @@ Use **JDK 25**. From the repository root on Windows:
 
 ```powershell
 .\gradlew.bat :26.3-fabric:build
+.\gradlew.bat :1.21.1-neoforge:build
 .\gradlew.bat buildAll --continue
 ```
 
-The first command builds 26.3; the second builds all 18 Fabric targets through Stonecutter. On Linux and macOS, replace `.\gradlew.bat` with `bash ./gradlew`. The first build downloads its dependencies.
+The first two commands build individual targets; `buildAll` builds all 18 Fabric targets and the NeoForge target through Stonecutter. On Linux and macOS, replace `.\gradlew.bat` with `bash ./gradlew`. The first build downloads its dependencies.
 
-Mod JARs are collected in **`build/fabric/`**. Source archives go in **`build/fabric/sources/`**. GitHub contains the buildable source; compiled releases are available on Modrinth and CurseForge.
+Mod JARs are collected in **`build/fabric/`** and **`build/neoforge/`**. Source archives go in the `sources/` subfolder for each loader. GitHub contains the buildable source; compiled releases are available on Modrinth and CurseForge.
 
 ## License
 
